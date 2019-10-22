@@ -2,11 +2,13 @@ package mrmathami.thegame.entity.tile.spawner;
 
 import mrmathami.thegame.GameEntities;
 import mrmathami.thegame.GameField;
+import mrmathami.thegame.entity.GameEntity;
 import mrmathami.thegame.entity.UpdatableEntity;
 import mrmathami.thegame.entity.enemy.AbstractEnemy;
 import mrmathami.thegame.entity.tile.AbstractTile;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
 public abstract class AbstractSpawner<E extends AbstractEnemy> extends AbstractTile implements UpdatableEntity {
 	private final double spawningSize;
@@ -31,9 +33,11 @@ public abstract class AbstractSpawner<E extends AbstractEnemy> extends AbstractT
 			// TODO: get a random spot inside spawn range
 			// Check if the spot is valid and then spawn an enemy
 			// Remember to set this.tickDown back to this.spawnInterval
-			// and decrease this.numOfSpawn once you spawn an enemy.
-			// this.tickDown = spawnInterval;
-			// this.numOfSpawn -= 1;
+			// and decrease this.numOfSpawn once you spawn an enemy
+
+			 this.tickDown = spawnInterval;
+			 this.numOfSpawn -= 1;
+			field.doSpawn(this.doSpawn(super.getCreatedTick(), super.getPosX(), super.getPosY()));
 		}
 	}
 

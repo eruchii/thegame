@@ -9,6 +9,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.WindowEvent;
 import mrmathami.thegame.drawer.GameDrawer;
+import mrmathami.thegame.drawer.NormalEnemyDrawer;
+import mrmathami.thegame.entity.tile.spawner.NormalSpawner;
+import mrmathami.thegame.entity.enemy.NormalEnemy;
 import mrmathami.utilities.ThreadFactoryBuilder;
 
 import java.util.concurrent.Executors;
@@ -180,6 +183,7 @@ public final class GameController extends AnimationTimer {
 		final KeyCode keyCode = keyEvent.getCode();
 		if (keyCode == KeyCode.W) {
 		} else if (keyCode == KeyCode.S) {
+
 		} else if (keyCode == KeyCode.A) {
 		} else if (keyCode == KeyCode.D) {
 		} else if (keyCode == KeyCode.I) {

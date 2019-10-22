@@ -1,6 +1,7 @@
 package mrmathami.thegame;
 
 import mrmathami.thegame.entity.GameEntity;
+import mrmathami.thegame.entity.enemy.NormalEnemy;
 import mrmathami.thegame.entity.tile.Mountain;
 import mrmathami.thegame.entity.tile.Road;
 import mrmathami.thegame.entity.tile.Target;
@@ -143,7 +144,6 @@ public final class GameStage {
 						}
 					}
 				}
-
 				return new GameStage(width, height, entities);
 			} catch (NoSuchElementException e) {
 				throw new IOException("Resource invalid! Resource name: " + name, e);

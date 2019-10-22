@@ -4,6 +4,7 @@ import mrmathami.thegame.GameEntities;
 import mrmathami.thegame.GameField;
 import mrmathami.thegame.entity.*;
 import mrmathami.thegame.entity.tile.Road;
+import mrmathami.thegame.entity.tile.Target;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;
@@ -81,7 +82,7 @@ public abstract class AbstractEnemy extends AbstractEntity implements UpdatableE
 	@Override
 	public final boolean onEffect(@Nonnull GameField field, @Nonnull LivingEntity livingEntity) {
 		// TODO: harm the target
-		this.health = Long.MIN_VALUE;
+		this.health = this.health;
 		return false;
 	}
 

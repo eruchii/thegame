@@ -1,7 +1,10 @@
 package mrmathami.thegame;
 
 
+import mrmathami.thegame.drawer.NormalEnemyDrawer;
 import mrmathami.thegame.entity.*;
+import mrmathami.thegame.entity.enemy.AbstractEnemy;
+import mrmathami.thegame.entity.tile.Target;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -26,12 +29,21 @@ public final class GameField {
 	 * Field tick count
 	 */
 	private long tickCount;
+	/**
+	 * Target
+	 */
+	private Target Target;
+
 
 	public GameField(@Nonnull GameStage gameStage) {
 		this.width = gameStage.getWidth();
 		this.height = gameStage.getHeight();
 		this.tickCount = 0;
 		entities.addAll(gameStage.getEntities());
+		for(GameEntity entity: entities){
+			if(entity instanceof Target) this.Target = (Target) entity;
+		}
+		System.out.println();
 	}
 
 	public final double getWidth() {
@@ -77,7 +89,6 @@ public final class GameField {
 	 */
 	public final void tick() {
 		this.tickCount += 1;
-
 		// 1.1. Update UpdatableEntity
 		for (final GameEntity entity : entities) {
 			if (entity instanceof UpdatableEntity) ((UpdatableEntity) entity).onUpdate(this);
@@ -101,6 +112,13 @@ public final class GameField {
 			if (entity instanceof DestroyableEntity && ((DestroyableEntity) entity).isDestroyed()) {
 				if (entity instanceof DestroyListener) ((DestroyListener) entity).onDestroy(this);
 				destroyedEntities.add(entity);
+			}
+			else if(entity instanceof AbstractEnemy &&entity.isBeingContained(this.Target.getPosX(), this.Target.getPosY(),
+							this.Target.getWidth(), this.Target.getHeight())){
+				destroyedEntities.add(entity);
+				System.out.println("MonkaS " + entity.toString());
+				this.Target.doEffect(-1);
+				System.out.println(this.Target.getHealth());
 			}
 		}
 
