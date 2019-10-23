@@ -17,7 +17,7 @@
 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1
 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
 Target 1 13 1 3 20
-NormalSpawner 1 1 3 3 10 1 10
+NormalSpawner 1 1 3 3 10 1 100
 SmallerSpawner 1 1 3 3 1 1 1
 TankerSpawner 1 1 3 3 1 1 1
 BossSpawner 1 1 3 3 1 1 1

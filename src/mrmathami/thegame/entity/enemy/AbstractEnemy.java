@@ -82,7 +82,11 @@ public abstract class AbstractEnemy extends AbstractEntity implements UpdatableE
 	@Override
 	public final boolean onEffect(@Nonnull GameField field, @Nonnull LivingEntity livingEntity) {
 		// TODO: harm the target
-		this.health = this.health;
+		if(this.isBeingContained(livingEntity.getPosX(), livingEntity.getPosY(), livingEntity.getWidth(), livingEntity.getHeight()))
+		{
+			livingEntity.doEffect(-1);
+			this.doDestroy();
+		}
 		return false;
 	}
 
@@ -94,6 +98,7 @@ public abstract class AbstractEnemy extends AbstractEntity implements UpdatableE
 	@Override
 	public final void doEffect(long value) {
 		if (health != Long.MIN_VALUE && (value < -armor || value > 0)) this.health += value;
+		System.out.printf("%s %d\n",this.toString(),this.health);
 	}
 
 	@Override

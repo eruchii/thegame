@@ -16,7 +16,6 @@ public final class GameField {
 	@Nonnull private final Set<GameEntity> entities = new LinkedHashSet<>(Config._TILE_MAP_COUNT);
 	@Nonnull private final Collection<GameEntity> unmodifiableEntities = Collections.unmodifiableCollection(entities);
 	@Nonnull private final List<GameEntity> spawnEntities = new ArrayList<>(Config._TILE_MAP_COUNT);
-
 	/**
 	 * Field width
 	 */
@@ -58,6 +57,9 @@ public final class GameField {
 		return tickCount;
 	}
 
+	public final Target getTarget(){
+	    return  this.Target;
+    }
 	/**
 	 * @return entities on the field. Read-only list.
 	 */
@@ -112,13 +114,6 @@ public final class GameField {
 			if (entity instanceof DestroyableEntity && ((DestroyableEntity) entity).isDestroyed()) {
 				if (entity instanceof DestroyListener) ((DestroyListener) entity).onDestroy(this);
 				destroyedEntities.add(entity);
-			}
-			else if(entity instanceof AbstractEnemy &&entity.isBeingContained(this.Target.getPosX(), this.Target.getPosY(),
-							this.Target.getWidth(), this.Target.getHeight())){
-				destroyedEntities.add(entity);
-				System.out.println("MonkaS " + entity.toString());
-				this.Target.doEffect(-1);
-				System.out.println(this.Target.getHealth());
 			}
 		}
 
