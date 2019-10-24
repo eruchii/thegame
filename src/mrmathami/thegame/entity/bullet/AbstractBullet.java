@@ -14,6 +14,8 @@ public abstract class AbstractBullet extends AbstractEntity implements Updatable
 	private long tickDown;
 	private AbstractEnemy enemy = null;
 	private double speed;
+	private double slowEff = 0;
+	private long slowTime = 0;
 
 	protected AbstractBullet(long createdTick, double posX, double posY, double deltaX, double deltaY, double speed, long strength, long timeToLive) {
 		super(createdTick, posX, posY, 0.2, 0.2);
@@ -44,6 +46,11 @@ public abstract class AbstractBullet extends AbstractEntity implements Updatable
 		}
 	}
 
+	public void effectOnHit(long time, double eff){
+		this.slowTime = time;
+		this.slowEff = eff;
+	}
+
 	@Override
 	public final void onUpdate(@Nonnull GameField field) {
 		if(this.enemy != null && this.enemy.isDestroyed()){
@@ -60,7 +67,7 @@ public abstract class AbstractBullet extends AbstractEntity implements Updatable
 	public final boolean onEffect(@Nonnull GameField field, @Nonnull LivingEntity livingEntity) {
 		livingEntity.doEffect(-strength);
 		if(livingEntity instanceof AbstractEnemy){
-			((AbstractEnemy) livingEntity).reduceSpeed(10, 0.5);
+			((AbstractEnemy) livingEntity).reduceSpeed(slowTime, slowEff);
 		}
 		this.tickDown = 0;
 		return false;

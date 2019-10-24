@@ -106,11 +106,10 @@ public abstract class AbstractEnemy extends AbstractEntity implements UpdatableE
 
 	@Override
 	public final void doEffect(long value) {
-		System.out.printf("%s %d %d %f\n", this.toString(), this.health, this.slowTime, this.slowEff);
 		if (health != Long.MIN_VALUE && (value < -armor || value > 0)) this.health += value;
 	}
 
-	public final void reduceSpeed(int time, double x){
+	public final void reduceSpeed(long time, double x){
 		this.slowTime = (this.slowTime > time) ? this.slowTime : time;
 		this.slowEff = (this.slowEff > x) ? this.slowEff : x;
 	}
