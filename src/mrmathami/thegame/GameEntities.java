@@ -28,11 +28,11 @@ public final class GameEntities {
 			UnorderedPair.immutableOf(Mountain.class, NormalEnemy.class),
 			UnorderedPair.immutableOf(Mountain.class, SmallerEnemy.class),
 			UnorderedPair.immutableOf(Mountain.class, TankerEnemy.class),
-			UnorderedPair.immutableOf(Mountain.class, BossEnemy.class),
-			UnorderedPair.immutableOf(NormalEnemy.class, NormalEnemy.class),
-			UnorderedPair.immutableOf(SmallerEnemy.class, SmallerEnemy.class),
-			UnorderedPair.immutableOf(TankerEnemy.class, TankerEnemy.class),
-			UnorderedPair.immutableOf(BossEnemy.class, BossEnemy.class)
+			UnorderedPair.immutableOf(Mountain.class, BossEnemy.class)//,
+//			UnorderedPair.immutableOf(NormalEnemy.class, NormalEnemy.class),
+//			UnorderedPair.immutableOf(SmallerEnemy.class, SmallerEnemy.class),
+//			UnorderedPair.immutableOf(TankerEnemy.class, TankerEnemy.class),
+//			UnorderedPair.immutableOf(BossEnemy.class, BossEnemy.class)
 	));
 
 	private static final Set<Pair<Class<? extends EffectEntity>, Class<? extends LivingEntity>>> EFFECT_LIVING_SET

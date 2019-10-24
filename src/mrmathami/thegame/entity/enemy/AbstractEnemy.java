@@ -91,7 +91,7 @@ public abstract class AbstractEnemy extends AbstractEntity implements UpdatableE
 	@Override
 	public final boolean onEffect(@Nonnull GameField field, @Nonnull LivingEntity livingEntity) {
 		// TODO: harm the target
-		if(this.isBeingContained(livingEntity.getPosX(), livingEntity.getPosY(), livingEntity.getWidth(), livingEntity.getHeight()))
+		if(this.isBeingOverlapped(livingEntity.getPosX(), livingEntity.getPosY(), livingEntity.getWidth(), livingEntity.getHeight()))
 		{
 			livingEntity.doEffect(-1);
 			this.doDestroy();

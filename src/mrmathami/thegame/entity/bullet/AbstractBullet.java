@@ -40,7 +40,7 @@ public abstract class AbstractBullet extends AbstractEntity implements Updatable
 			double diffX = enemy.getPosX() + enemy.getWidth() / 2.0 - this.getPosX();
 			double diffY = enemy.getPosY() + enemy.getHeight() / 2.0 - this.getPosY();
 			double s = Math.sqrt(diffX * diffX + diffY * diffY);
-			double normalize = this.speed *1.5 / s;
+			double normalize = this.speed / s;
 			this.deltaX = diffX * normalize;
 			this.deltaY = diffY * normalize;
 		}

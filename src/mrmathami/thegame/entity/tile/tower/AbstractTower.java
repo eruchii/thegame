@@ -15,7 +15,7 @@ import java.util.Collection;
 public abstract class AbstractTower<E extends AbstractBullet> extends AbstractTile implements UpdatableEntity {
 	private final double range;
 	private final long speed;
-
+	private long numTarget = 1;
 	private long tickDown;
 
 	protected AbstractTower(long createdTick, long posX, long posY, double range, long speed) {
@@ -36,17 +36,23 @@ public abstract class AbstractTower<E extends AbstractBullet> extends AbstractTi
 			        field.getEntities(), GameEntity.class ,
                     this.getPosX() - this.range, this.getPosY() - this.range,
                     this.range*2.0, this.range*2.0);
-
+			long bulletCount = this.numTarget;
+			if(entities.size() < bulletCount) bulletCount = entities.size();
             for(GameEntity entity: entities){
+            	if(bulletCount == 0){
+            		this.tickDown = speed;
+            		return;
+				}
 				if(entity instanceof AbstractEnemy){
 				    AbstractBullet bullet = this.doSpawn(field.getTickCount(),this, (AbstractEnemy) entity);
 				    field.doSpawn(bullet);
-				    this.tickDown = speed;
-				    return;
+				    bulletCount--;
 				}
 			}
 		}
 	}
+	// Tower can shoot more than one enemy
+	public final void setNumTarget(long numTarget){ this.numTarget = numTarget;}
 
 	/**
 	 * Create a new bullet. Each tower spawn different type of bullet.

@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 public final class SniperTower extends AbstractTower<SniperBullet> {
 	public SniperTower(long createdTick, long posX, long posY) {
 		super(createdTick, posX, posY, Config.SNIPER_TOWER_RANGE, Config.SNIPER_TOWER_SPEED);
+		super.setNumTarget(Config.SNIPER_BULLET_COUNT);
 	}
 
 	@Nonnull

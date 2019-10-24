@@ -42,7 +42,6 @@ public final class GameField {
 		for(GameEntity entity: entities){
 			if(entity instanceof Target) this.Target = (Target) entity;
 		}
-		System.out.println();
 	}
 
 	public final double getWidth() {
