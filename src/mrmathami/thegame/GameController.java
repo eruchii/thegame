@@ -9,9 +9,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.WindowEvent;
 import mrmathami.thegame.drawer.GameDrawer;
-import mrmathami.thegame.drawer.NormalEnemyDrawer;
-import mrmathami.thegame.entity.tile.spawner.NormalSpawner;
-import mrmathami.thegame.entity.enemy.NormalEnemy;
 import mrmathami.utilities.ThreadFactoryBuilder;
 
 import java.util.concurrent.Executors;

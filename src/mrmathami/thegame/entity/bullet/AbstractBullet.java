@@ -58,7 +58,10 @@ public abstract class AbstractBullet extends AbstractEntity implements Updatable
 
 	@Override
 	public final boolean onEffect(@Nonnull GameField field, @Nonnull LivingEntity livingEntity) {
-		livingEntity.doEffect(-10);
+		livingEntity.doEffect(-strength);
+		if(livingEntity instanceof AbstractEnemy){
+			((AbstractEnemy) livingEntity).reduceSpeed(10, 0.5);
+		}
 		this.tickDown = 0;
 		return false;
 	}
