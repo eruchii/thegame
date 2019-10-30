@@ -163,6 +163,8 @@ public final class GameStage {
 		return null;
 	}
 
+
+
 	public final long getWidth() {
 		return width;
 	}

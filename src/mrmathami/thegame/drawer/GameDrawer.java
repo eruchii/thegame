@@ -183,7 +183,8 @@ public final class GameDrawer {
 				);
 			}
 		}
-
+		graphicsContext.setFill(Color.WHITE);
+		graphicsContext.fillText(String.format("HP: %d", gameField.getTarget().getHealth()), 0, Config.SCREEN_HEIGHT - 30.);
         graphicsContext.setFill(Color.WHITE);
         graphicsContext.fillText(String.format("Money: %d", gameField.getMoney()), 0, Config.SCREEN_HEIGHT - 50);
 	}
