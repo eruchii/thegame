@@ -183,6 +183,9 @@ public final class GameDrawer {
 				);
 			}
 		}
+
+        graphicsContext.setFill(Color.WHITE);
+        graphicsContext.fillText(String.format("Money: %d", gameField.getMoney()), 0, Config.SCREEN_HEIGHT - 50);
 	}
 
 	public final double screenToFieldPosX(double screenPosX) {

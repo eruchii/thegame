@@ -89,6 +89,7 @@ public abstract class AbstractEnemy extends AbstractEntity implements UpdatableE
 	@Override
 	public final void onDestroy(@Nonnull GameField field) {
 		// TODO: reward
+		field.getReward(reward);
 	}
 
 	@Override

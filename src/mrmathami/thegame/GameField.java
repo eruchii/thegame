@@ -33,6 +33,10 @@ public final class GameField {
 	 */
 	private Target Target;
 
+	/**
+     * Money
+     */
+	private long money = 0;
 
 	public GameField(@Nonnull GameStage gameStage) {
 		this.width = gameStage.getWidth();
@@ -58,6 +62,14 @@ public final class GameField {
 
 	public final Target getTarget(){
 	    return  this.Target;
+    }
+
+    public void getReward(long reward){
+        money += reward;
+    }
+
+    public long getMoney(){
+        return money;
     }
 	/**
 	 * @return entities on the field. Read-only list.
@@ -129,4 +141,11 @@ public final class GameField {
 		}
 		spawnEntities.clear();
 	}
+
+    /**
+     *  Save game field
+     */
+	public final void save(){
+
+    }
 }
