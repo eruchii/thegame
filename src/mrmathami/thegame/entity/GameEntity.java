@@ -43,4 +43,5 @@ public interface GameEntity {
 	 * @return if current entity is being overlapped in a rectangle region
 	 */
 	boolean isBeingOverlapped(double posX, double posY, double width, double height);
+
 }

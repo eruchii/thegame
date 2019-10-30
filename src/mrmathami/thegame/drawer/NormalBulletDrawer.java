@@ -5,7 +5,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
+import mrmathami.thegame.Config;
 import mrmathami.thegame.entity.GameEntity;
+import mrmathami.thegame.entity.bullet.AbstractBullet;
+import mrmathami.thegame.entity.bullet.NormalBullet;
+import mrmathami.thegame.entity.tile.tower.AbstractTower;
 
 import javax.annotation.Nonnull;
 
@@ -27,5 +31,14 @@ public final class NormalBulletDrawer implements EntityDrawer {
 	public void draw(long tickCount, @Nonnull GraphicsContext graphicsContext, @Nonnull GameEntity entity, double screenPosX, double screenPosY, double screenWidth, double screenHeight, double zoom) {
 		graphicsContext.setFill(gradient);
 		graphicsContext.fillOval(screenPosX, screenPosY, screenWidth, screenHeight);
+//		AbstractBullet bullet = (AbstractBullet) entity;
+//		AbstractTower tower = bullet.getTower();
+//		double startX = (tower.getPosX() + tower.getWidth())*Config.TILE_SIZE;
+//		double startY = (tower.getPosY() + tower.getHeight())*Config.TILE_SIZE;
+//		double endX = (bullet.getPosX() + bullet.getWidth())*Config.TILE_SIZE;
+//		double endY = (bullet.getPosY() + bullet.getHeight())*Config.TILE_SIZE;
+//		graphicsContext.setStroke(Color.BLUE);
+//		graphicsContext.setLineWidth(2);
+//		graphicsContext.strokeLine(startX, startY, endX, endY);
 	}
 }

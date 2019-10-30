@@ -9,8 +9,8 @@ import mrmathami.thegame.entity.tile.tower.AbstractTower;
 import javax.annotation.Nonnull;
 
 public final class NormalBullet extends AbstractBullet {
-	private final long time = 10;
-	private final double eff = 0.5;
+	private final long time = 30;
+	private final double eff = 0.24;
 	public NormalBullet(long createdTick, double posX, double posY, double deltaX, double deltaY) {
 		super(createdTick, posX, posY, deltaX, deltaY, Config.NORMAL_BULLET_SPEED, Config.NORMAL_BULLET_STRENGTH, Config.NORMAL_BULLET_TTL);
 		super.effectOnHit(this.time, this.eff);

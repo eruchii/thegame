@@ -51,17 +51,17 @@ public final class Config {
 
 	//region Bullet
 	public static final long NORMAL_BULLET_TTL = 30;
-	public static final long NORMAL_BULLET_STRENGTH = 30;
-	public static final double NORMAL_BULLET_SPEED = 0.35;
+	public static final long NORMAL_BULLET_STRENGTH = 0;
+	public static final double NORMAL_BULLET_SPEED = 0.55;
 	public static final long NORMAL_BULLET_COUNT = 1;
 
 	public static final long MACHINE_GUN_BULLET_TTL = 15;
-	public static final long MACHINE_GUN_BULLET_STRENGTH = 30;
-	public static final double MACHINE_GUN_BULLET_SPEED = 0.45;
-	public static final long MACHINE_GUN_BULLET_COUNT = 3;
+	public static final long MACHINE_GUN_BULLET_STRENGTH = 3;
+	public static final double MACHINE_GUN_BULLET_SPEED = 0.55;
+	public static final long MACHINE_GUN_BULLET_COUNT = 5;
 
 	public static final long SNIPER_BULLET_TTL = 60;
-	public static final long SNIPER_BULLET_STRENGTH = 120;
+	public static final long SNIPER_BULLET_STRENGTH = 0;
 	public static final double SNIPER_BULLET_SPEED = 0.55;
 	public static final long SNIPER_BULLET_COUNT = 1;
 	//endregion

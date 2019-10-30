@@ -22,6 +22,7 @@ public abstract class AbstractEnemy extends AbstractEntity implements UpdatableE
 	private long reward;
 	private long slowTime = 0;
 	private double slowEff = 0;
+	private long maxHealth;
 
 	protected AbstractEnemy(long createdTick, double posX, double posY, double size, long health, long armor, double speed, long reward) {
 		super(createdTick, posX, posY, size, size);
@@ -29,6 +30,7 @@ public abstract class AbstractEnemy extends AbstractEntity implements UpdatableE
 		this.armor = armor;
 		this.speed = speed;
 		this.reward = reward;
+		this.maxHealth = health;
 	}
 
 	private static double evaluateDistance(@Nonnull Collection<GameEntity> overlappableEntities,
@@ -59,7 +61,7 @@ public abstract class AbstractEnemy extends AbstractEntity implements UpdatableE
 
 		if(this.slowTime > 0){
 			this.slowTime -= 1;
-			currentSpeed = this.speed * ((1 - this.slowEff > 0) ? (1 - this.slowEff) : 0);
+			currentSpeed = this.speed * ((1 - this.slowEff > 0) ? (1 - this.slowEff) : 0.05);
 		}
 
 		final Collection<GameEntity> overlappableEntities = GameEntities.getOverlappedEntities(field.getEntities(),
@@ -69,6 +71,7 @@ public abstract class AbstractEnemy extends AbstractEntity implements UpdatableE
 		double newPosY = enemyPosY;
 		for (double realSpeed = currentSpeed * 0.125; realSpeed <= currentSpeed; realSpeed += realSpeed) {
 			for (double[] deltaDirection : DELTA_DIRECTION_ARRAY) {
+
 				final double currentPosX = enemyPosX + deltaDirection[0] * realSpeed;
 				final double currentPosY = enemyPosY + deltaDirection[1] * realSpeed;
 				final double currentDistance = evaluateDistance(overlappableEntities, this, currentPosX, currentPosY, enemyWidth, enemyHeight);
@@ -104,14 +107,16 @@ public abstract class AbstractEnemy extends AbstractEntity implements UpdatableE
 		return health;
 	}
 
+	public final long getMaxHealth(){ return maxHealth;}
+
 	@Override
 	public final void doEffect(long value) {
 		if (health != Long.MIN_VALUE && (value < -armor || value > 0)) this.health += value;
 	}
 
 	public final void reduceSpeed(long time, double x){
-		this.slowTime = (this.slowTime > time) ? this.slowTime : time;
-		this.slowEff = (this.slowEff > x) ? this.slowEff : x;
+		this.slowTime = Math.max(this.slowTime, time);
+		this.slowEff = Math.max(this.slowEff, x);
 	}
 
 	public final boolean isSlow(){ return this.slowTime > 0;}

@@ -16,6 +16,7 @@ public abstract class AbstractBullet extends AbstractEntity implements Updatable
 	private double speed;
 	private double slowEff = 0;
 	private long slowTime = 0;
+	private AbstractTower tower;
 
 	protected AbstractBullet(long createdTick, double posX, double posY, double deltaX, double deltaY, double speed, long strength, long timeToLive) {
 		super(createdTick, posX, posY, 0.2, 0.2);
@@ -33,12 +34,13 @@ public abstract class AbstractBullet extends AbstractEntity implements Updatable
 		this.tickDown = timeToLive;
 		this.enemy = enemy;
 		this.speed = speed;
+		this.tower = tower;
 	}
 
 	protected void calcNewDelta(){
 		if(this.enemy != null) {
-			double diffX = enemy.getPosX() + enemy.getWidth() / 2.0 - this.getPosX();
-			double diffY = enemy.getPosY() + enemy.getHeight() / 2.0 - this.getPosY();
+			double diffX = enemy.getPosX() + enemy.getWidth() / 2.0 - this.getPosX() - this.getWidth()/2;
+			double diffY = enemy.getPosY() + enemy.getHeight() / 2.0 - this.getPosY() - this.getHeight()/2;
 			double s = Math.sqrt(diffX * diffX + diffY * diffY);
 			double normalize = this.speed / s;
 			this.deltaX = diffX * normalize;
@@ -49,6 +51,10 @@ public abstract class AbstractBullet extends AbstractEntity implements Updatable
 	public void effectOnHit(long time, double eff){
 		this.slowTime = time;
 		this.slowEff = eff;
+	}
+
+	public AbstractTower getTower(){
+		return this.tower;
 	}
 
 	@Override
