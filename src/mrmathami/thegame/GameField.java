@@ -1,12 +1,14 @@
 package mrmathami.thegame;
 
 
-import mrmathami.thegame.drawer.NormalEnemyDrawer;
 import mrmathami.thegame.entity.*;
-import mrmathami.thegame.entity.enemy.AbstractEnemy;
 import mrmathami.thegame.entity.tile.Target;
+import mrmathami.thegame.entity.tile.tower.AbstractTower;
 
 import javax.annotation.Nonnull;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -140,12 +142,29 @@ public final class GameField {
 			if (entity instanceof SpawnListener) ((SpawnListener) entity).onSpawn(this);
 		}
 		spawnEntities.clear();
+		if(getTickCount() == 50) this.save();
 	}
 
     /**
      *  Save game field
      */
-	public final void save(){
-
-    }
+	public final void save()  {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
+		String filename = "I:\\JavaOOP\\thegame-master\\src\\mrmathami\\thegame\\"+sdf.format(new Date())+".txt";
+		try(final PrintWriter writer = new PrintWriter(filename, "UTF-8")) {
+			if (writer == null) throw new IOException("Resource not found!");
+			writer.printf("%s %d\n","Money", this.money);
+			writer.printf("%s %d\n","TargetHP", Target.getHealth());
+			for (GameEntity entity : entities) {
+			    if(entity instanceof AbstractTower) {
+                    String[] classname = entity.getClass().toString().split("class ")[1].split("[. ]+");
+                    String entityName = classname[classname.length - 1];
+                    writer.printf("%s %f %f\n", entityName, entity.getPosX(), entity.getPosY());
+                }
+			}
+			System.out.println("Saved!");
+		} catch (IOException e) {
+			System.out.println("MonkaS");
+		}
+	}
 }
