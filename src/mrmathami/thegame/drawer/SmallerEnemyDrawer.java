@@ -15,10 +15,11 @@ public final class SmallerEnemyDrawer implements EntityDrawer {
 		double percent = 1.0 * ((AbstractEnemy) entity).getHealth() / ((AbstractEnemy) entity).getMaxHealth();
 
 		graphicsContext.setFill(Color.RED);
-		graphicsContext.fillRect(screenPosX, screenPosY - 8, screenWidth*percent, 5);
+		graphicsContext.fillRect(screenPosX - 5, screenPosY - 8, (screenWidth + 10)*percent, 5);
 		graphicsContext.setStroke(Color.BLACK);
 		graphicsContext.setLineWidth(1);
-		graphicsContext.strokeRect(screenPosX, screenPosY - 8, screenWidth, 5);
+		graphicsContext.strokeRect(screenPosX - 5, screenPosY - 8, screenWidth + 10, 5);
+
 		graphicsContext.setFill(Color.MAGENTA);
 		graphicsContext.fillRoundRect(screenPosX, screenPosY, screenWidth, screenHeight, 4, 4);
 	}

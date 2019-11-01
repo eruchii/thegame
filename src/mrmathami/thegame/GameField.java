@@ -8,11 +8,27 @@ import mrmathami.thegame.entity.tile.tower.MachineGunTower;
 import mrmathami.thegame.entity.tile.tower.NormalTower;
 import mrmathami.thegame.entity.tile.tower.SniperTower;
 
+
+import org.apache.http.HttpHeaders;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+import org.apache.http.client.utils.URIBuilder;
+
+import mrmathami.thegame.HttpMultiThread;
+
 import javax.annotation.Nonnull;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
+import java.io.*;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -147,13 +163,26 @@ public final class GameField {
 			if (entity instanceof SpawnListener) ((SpawnListener) entity).onSpawn(this);
 		}
 		spawnEntities.clear();
-		if(getTickCount() == 50) this.load("2019-10-30 17-48-23.txt");
 	}
 
     /**
      *  Save game field
      */
-	public final void save(String name)  {
+    public final ArrayList<String> createSaveFile(){
+		ArrayList<String> file = new ArrayList<>();
+		file.add(String.format("%s %d\n","Money", this.money));
+		file.add(String.format("%s %d\n", "TargetHP", Target.getHealth()));
+		for (GameEntity entity : entities) {
+			if(entity instanceof AbstractTower) {
+				String[] classname = entity.getClass().toString().split("class ")[1].split("[. ]+");
+				String entityName = classname[classname.length - 1];
+				file.add(String.format("%s %f %f\n", entityName, entity.getPosX(), entity.getPosY()));
+			}
+		}
+		return file;
+	}
+
+	public final void saveToFile(String name)  {
 	    String filename = new String();
 	    if(name == null) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
@@ -162,17 +191,7 @@ public final class GameField {
 		System.out.println(filename);
 		try(final PrintWriter writer = new PrintWriter(filename, "UTF-8")) {
 			if (writer == null) throw new IOException("Resource not found!");
-			ArrayList<String> file = new ArrayList<>();
-			file.add(String.format("%s %d\n","Money", this.money));
-			file.add(String.format("%s %d\n", "TargetHP", Target.getHealth()));
-			for (GameEntity entity : entities) {
-			    if(entity instanceof AbstractTower) {
-                    String[] classname = entity.getClass().toString().split("class ")[1].split("[. ]+");
-                    String entityName = classname[classname.length - 1];
-                    file.add(String.format("%s %f %f\n", entityName, entity.getPosX(), entity.getPosY()));
-                }
-			}
-			System.out.println(file.size());
+			ArrayList<String> file = createSaveFile();
 			writer.println(file.size());
 			for(String s: file){
 				writer.write(s);
@@ -183,44 +202,66 @@ public final class GameField {
 		}
 	}
 
+	public final void saveToCloud(){
+    	Thread t = new Thread(new HttpMultiThread(this, "POST"));
+    	t.start();
+	}
+
 	/**
 	 * Load
 	 */
-	public final void load(@Nonnull String name){
-		try (final InputStream stream = new FileInputStream(name)) {
+	public final void load(InputStream stream){
+	    Scanner scanner = new Scanner(stream);
+		final List<GameEntity> destroyedEntities = new ArrayList<>(Config._TILE_MAP_COUNT);
+		for(GameEntity entity: entities){
+			if(entity instanceof AbstractTower){
+				destroyedEntities.add(entity);
+			}
+		}
+		entities.removeAll(destroyedEntities);
+
+		final int n = scanner.nextInt();
+		for (int i = 0; i < n; i++) {
+			String type = scanner.next();
+			if ("Money".equals(type)) {
+				int m = scanner.nextInt();
+				this.money = m;
+			} else if ("TargetHP".equals(type)) {
+				int hp = scanner.nextInt();
+				this.Target.setHealth(hp);
+			} else if ("NormalTower".equals(type)) {
+				double x = scanner.nextDouble();
+				double y = scanner.nextDouble();
+				entities.add(new NormalTower(0, (long) x, (long) y));
+			} else if ("MachineGunTower".equals(type)) {
+				double x = scanner.nextDouble();
+				double y = scanner.nextDouble();
+				entities.add(new MachineGunTower(0, (long) x, (long) y));
+			} else if ("SniperTower".equals(type)) {
+				double x = scanner.nextDouble();
+				double y = scanner.nextDouble();
+				entities.add(new SniperTower(0, (long) x, (long) y));
+			}
+		}
+		System.out.println("Loaded");
+	}
+
+	public final void loadFromFile(@Nonnull String name){
+		try (final InputStream stream = this.getClass().getResourceAsStream(name)) {
             if (stream == null) throw new IOException("Resource not found! Resource name: " + name);
-            final Scanner scanner = new Scanner(stream);
             try {
-                final int n = scanner.nextInt();
-                for (int i = 0; i < n; i++) {
-                    String type = scanner.next();
-                    if ("Money".equals(type)) {
-                        int m = scanner.nextInt();
-                        this.money = m;
-                    } else if ("TargetHP".equals(type)) {
-                        int hp = scanner.nextInt();
-                        this.Target.setHealth(hp);
-                    } else if ("NormalTower".equals(type)) {
-                        double x = scanner.nextDouble();
-                        double y = scanner.nextDouble();
-                        entities.add(new NormalTower(0, (long) x, (long) y));
-                    } else if ("MachineGunTower".equals(type)) {
-                        double x = scanner.nextDouble();
-                        double y = scanner.nextDouble();
-                        entities.add(new MachineGunTower(0, (long) x, (long) y));
-                    } else if ("SniperTower".equals(type)) {
-                        double x = scanner.nextDouble();
-                        double y = scanner.nextDouble();
-                        entities.add(new SniperTower(0, (long) x, (long) y));
-                    }
-                }
-                System.out.println("Loaded");
+				load(stream);
             } catch (NoSuchElementException e) {
                 throw new IOException("Resource invalid! Resource name: " + name, e);
             }
         } catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public final void loadFromCloud(){
+		Thread t = new Thread(new HttpMultiThread(this, "GET"));
+		t.start();
 	}
 
 }

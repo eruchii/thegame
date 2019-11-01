@@ -1,0 +1,7 @@
+6
+Money 20000
+TargetHP 2000
+SniperTower 11.000000 8.000000
+SniperTower 12.000000 8.000000
+SniperTower 13.000000 8.000000
+SniperTower 14.000000 8.000000
