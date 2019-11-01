@@ -3,14 +3,22 @@ package mrmathami.thegame;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.WindowEvent;
+import mrmathami.thegame.drawer.EntityDrawer;
 import mrmathami.thegame.drawer.GameDrawer;
+import mrmathami.thegame.drawer.NormalTowerDrawer;
+import mrmathami.thegame.drawer.SmallerEnemyDrawer;
+import mrmathami.thegame.entity.enemy.SmallerEnemy;
+import mrmathami.thegame.entity.tile.tower.NormalTower;
 import mrmathami.utilities.ThreadFactoryBuilder;
 
+import java.lang.reflect.Field;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -68,7 +76,6 @@ public final class GameController extends AnimationTimer {
 	public GameController(GraphicsContext graphicsContext) {
 		// The screen to draw on
 		this.graphicsContext = graphicsContext;
-
 		// Just a few acronyms.
 		final long width = Config.TILE_HORIZONTAL;
 		final long height = Config.TILE_VERTICAL;
@@ -208,9 +215,13 @@ public final class GameController extends AnimationTimer {
 	 * @param mouseEvent the mouse button you release up.
 	 */
 	final void mouseUpHandler(MouseEvent mouseEvent) {
-//		mouseEvent.getButton(); // which mouse button?
-//		// Screen coordinate. Remember to convert to field coordinate
-//		drawer.screenToFieldPosX(mouseEvent.getX());
-//		drawer.screenToFieldPosY(mouseEvent.getY());
+		mouseEvent.getButton(); // which mouse button?
+		// Screen coordinate. Remember to convert to field coordinate
+
+		if (mouseEvent.getEventType() == MouseEvent.MOUSE_RELEASED){
+			NormalTower t = new NormalTower(this.tick,(long)mouseEvent.getX(),(long)mouseEvent.getY());
+			System.out.println("hi");
+			
+		}
 	}
 }
