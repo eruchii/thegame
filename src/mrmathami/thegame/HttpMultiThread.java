@@ -28,10 +28,11 @@ import java.util.*;
 public class HttpMultiThread implements Runnable{
     GameField field;
     String method;
-
+    String token;
     public HttpMultiThread(@Nonnull GameField field, String method){
         this.field = field;
         this.method = method;
+        this.token = this.getToken();
     }
     @Override
     public void run() {
@@ -39,8 +40,8 @@ public class HttpMultiThread implements Runnable{
         else loadFromCloud();
     }
 
-    public final void saveToCloud(){
-        String token = new String();
+    public final String getToken(){
+        String token = null;
         try (final InputStream stream = this.getClass().getResourceAsStream("/token.txt")){
             if(stream == null) throw new IOException("Token file does not exists");
             final Scanner sc = new Scanner(stream);
@@ -48,7 +49,24 @@ public class HttpMultiThread implements Runnable{
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return token;
+    }
 
+    public final String getURL(String path, String token) throws URISyntaxException {
+        String protocol = Config.PROTOCOL;
+        String host = Config.HOST;
+        int port = Config.PORT;
+        URIBuilder builder = new URIBuilder();
+        builder.setPath(path);
+        builder.setHost(host);
+        builder.setPort(port);
+        builder.setScheme(protocol);
+        builder.setParameter("token", token);
+        String url = builder.build().toString();
+        return url;
+    }
+
+    public final void saveToCloud(){
         ArrayList<String> file = field.createSaveFile();
         StringBuilder strSave = new StringBuilder();
         strSave.append(String.format("%d\n", file.size()));
@@ -57,53 +75,21 @@ public class HttpMultiThread implements Runnable{
         String encodedSave = Base64.getEncoder().encodeToString(resSave.getBytes());
 
         try{
-            String protocol = Config.PROTOCOL;
-            String host = Config.HOST;
-            int port = Config.PORT;
-            String path = "/sendsavefile";
-
-            URIBuilder builder = new URIBuilder();
-            builder.setPath(path);
-            builder.setHost(host);
-            builder.setPort(port);
-            builder.setScheme(protocol);
-            builder.setParameter("token", token);
-            String url = builder.build().toString();
-
+            String url = getURL("/sendsavefile", this.token);
             CloseableHttpClient httpClient = HttpClients.createDefault();
             HttpPost post = new HttpPost(url);
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("data",encodedSave));
             post.setEntity(new UrlEncodedFormEntity(params));
             CloseableHttpResponse response = httpClient.execute(post);
-            System.out.println(response.getStatusLine());
 
         } catch (URISyntaxException | IOException e){
             e.printStackTrace();
         }
     }
     public final void loadFromCloud(){
-        String token = new String();
-        try (final InputStream stream = this.getClass().getResourceAsStream("/token.txt")){
-            if(stream == null) throw new IOException("Token file does not exists");
-            final Scanner sc = new Scanner(stream);
-            token = sc.next();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         try{
-            String protocol = Config.PROTOCOL;
-            String host = Config.HOST;
-            int port = Config.PORT;
-            String path = "/getsavefile";
-
-            URIBuilder builder = new URIBuilder();
-            builder.setPath(path);
-            builder.setHost(host);
-            builder.setPort(port);
-            builder.setScheme(protocol);
-            builder.setParameter("token", token);
-            String url = builder.build().toString();
+            String url = this.getURL("/getsavefile", this.token);
 
             CloseableHttpClient httpClient = HttpClients.createDefault();
             HttpGet get = new HttpGet(url);
@@ -111,7 +97,6 @@ public class HttpMultiThread implements Runnable{
             CloseableHttpResponse response = httpClient.execute(get);
             HttpEntity httpEntity = response.getEntity();
             String apiOutput = EntityUtils.toString(httpEntity);
-            System.out.println(apiOutput);
             Object jsonString = new JSONParser().parse(apiOutput);
             JSONObject jo = (JSONObject) jsonString;
             String data = (String)jo.get("data");
