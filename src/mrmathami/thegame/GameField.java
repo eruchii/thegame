@@ -148,7 +148,10 @@ public final class GameField {
 		spawnEntities.clear();
 		if(getTickCount() == 50) this.load("2019-10-30 17-48-23.txt");
 	}
-
+	public  void addEntities(@Nonnull GameEntity t){
+		this.spawnEntities.add(t);
+		this.entities.add(t);
+	}
     /**
      *  Save game field
      */
