@@ -70,9 +70,12 @@ public final class Main extends Application {
 		// Adding all the item
 		shopPane.getChildren().addAll(normalTower,machineGunTower,sniperTower);
 		// Mouse Listener
-		shopPane.setOnMousePressed(gameController::mouseDownHandler);
-		shopPane.setOnMouseReleased(gameController::mouseUpHandler);
-		canvas.setOnMouseReleased(gameController::mouseUpHandler);
+
+		group.setOnMousePressed(gameController::mouseDownHandler);
+		group.setOnMouseReleased(gameController::mouseUpHandler);
+//		shopPane.setOnMousePressed(gameController::mouseDownHandler);
+//		shopPane.setOnMouseReleased(gameController::mouseUpHandler);
+//		canvas.setOnMouseReleased(gameController::mouseUpHandler);
 //		canvas.setOnMouseClicked(...);
 //		canvas.setOnMouseMoved(...);
 //		Adding all the element

@@ -16,6 +16,7 @@ import mrmathami.thegame.drawer.NormalTowerDrawer;
 import mrmathami.thegame.drawer.SmallerEnemyDrawer;
 import mrmathami.thegame.entity.GameEntity;
 import mrmathami.thegame.entity.enemy.SmallerEnemy;
+import mrmathami.thegame.entity.tile.Mountain;
 import mrmathami.thegame.entity.tile.tower.MachineGunTower;
 import mrmathami.thegame.entity.tile.tower.NormalTower;
 import mrmathami.thegame.entity.tile.tower.SniperTower;
@@ -33,6 +34,7 @@ import java.util.concurrent.TimeUnit;
 public final class GameController extends AnimationTimer {
 	private GameEntity lastEntityToAdd;
 	private GameEntity currentEntityToAdd = null;
+	private Shop shop;
 	/**
 	 * Advance stuff. Just don't touch me. Google me if you are curious.
 	 */
@@ -97,6 +99,7 @@ public final class GameController extends AnimationTimer {
 		// that the drawer will select and draw everything in it in an self-defined order.
 		// Can be modified to support zoom in / zoom out of the map.
 		drawer.setFieldViewRegion(0.0, 0.0, Config.TILE_SIZE);
+		shop = new Shop(this.field);
 	}
 
 	/**
@@ -218,18 +221,14 @@ public final class GameController extends AnimationTimer {
 			// Choose the Tower. Must check to specify that Mouse clicked is the click on the Shop Pane
 			if (posXToDraw >= 30 && posXToDraw <=35) {
                 if (posYToDraw >= 0 && posYToDraw <= 5)
-                    this.lastEntityToAdd = new NormalTower(this.tick, posXToDraw, posYToDraw);
+                    this.lastEntityToAdd = new NormalTower(this.field.getTickCount(), 0, 0);
                 else if (posYToDraw >= 6 && posYToDraw <=11)
-                    this.lastEntityToAdd = new MachineGunTower(this.tick, posXToDraw, posYToDraw);
+                    this.lastEntityToAdd = new MachineGunTower(this.field.getTickCount(), 0, 0);
                 else if (posYToDraw >= 12 && posYToDraw<=17)
-                    this.lastEntityToAdd = new SniperTower(this.tick,posXToDraw,posYToDraw);
+                    this.lastEntityToAdd = new SniperTower(this.field.getTickCount(),0,0);
             }
 			// Update the Current Tower To add
 			this.currentEntityToAdd = this.lastEntityToAdd;
-			// Test AREAAAA
-            System.out.println(posXToDraw);
-            System.out.println(posYToDraw);
-          //  System.out.println(lastEntityToAdd.getClass());
 		}
 	}
 
@@ -248,23 +247,25 @@ public final class GameController extends AnimationTimer {
 		long posY = (long) this.drawer.screenToFieldPosY(mouseEvent.getY()/1000);
 		/*System.out.println(posX);
 		System.out.println(posY);*/
-		boolean check = false;
+		boolean check = true;
 		// check if it was mountain or not
-		if ((posY == 4 || posY==12 ) && posX < 26 )
-			check = true;
-		else if (posY == 8 && posX >4 )
-			check = true;
-		else if (posY == 0 || posY == 16) check = true;
+		for(GameEntity entity: field.getEntities()){
+			if(posX == entity.getPosX() && posY == entity.getPosY()){
+				if(! (entity instanceof Mountain)) {
+					check = false;
+					break;
+				}
+			}
+		}
 		// Place that towerrrrrr
 		if (check && currentEntityToAdd!=null){
 		    // Add And Spawn Specify Tower
 			if (this.currentEntityToAdd instanceof NormalTower)
-                this.field.addEntities(new NormalTower(this.tick,posX,posY));
+                shop.buyNormalTower(posX, posY);
 			else if (this.currentEntityToAdd instanceof MachineGunTower)
-				this.field.addEntities(new MachineGunTower(this.tick,posX,posY));
-			else if (this.currentEntityToAdd instanceof SniperTower);
-				this.field.addEntities(new SniperTower(this.tick,posX,posY));
+				shop.buyMachineGunTower(posX, posY);
+			else if (this.currentEntityToAdd instanceof SniperTower)
+				shop.buySniperTower(posX, posY);
 		}
-		System.out.println(currentEntityToAdd.getClass());
 	}
 }
