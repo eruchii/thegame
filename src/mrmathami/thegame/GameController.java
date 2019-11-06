@@ -261,11 +261,11 @@ public final class GameController extends AnimationTimer {
 		if (check && currentEntityToAdd!=null){
 		    // Add And Spawn Specify Tower
 			if (this.currentEntityToAdd instanceof NormalTower)
-                shop.buyTower(new NormalTower(field.getTickCount(), posX, posY));
+                shop.buyNormalTower(posX, posY);
 			else if (this.currentEntityToAdd instanceof MachineGunTower)
-				shop.buyTower(new MachineGunTower(field.getTickCount(), posX, posY));
+				shop.buyMachineGunTower(posX, posY);
 			else if (this.currentEntityToAdd instanceof SniperTower)
-				shop.buyTower(new SniperTower(field.getTickCount(), posX, posY));
+				shop.buySniperTower(posX, posY);
 		}
 	}
 }
