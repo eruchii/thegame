@@ -1,6 +1,7 @@
 package mrmathami.thegame.drawer;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import mrmathami.thegame.entity.GameEntity;
 import mrmathami.thegame.entity.LivingEntity;
@@ -8,22 +9,27 @@ import mrmathami.thegame.entity.enemy.AbstractEnemy;
 import mrmathami.thegame.entity.enemy.SmallerEnemy;
 
 import javax.annotation.Nonnull;
+import java.io.File;
 
 public final class SmallerEnemyDrawer implements EntityDrawer {
 	@Override
-	public void draw(long tickCount, @Nonnull GraphicsContext graphicsContext, @Nonnull GameEntity entity, double screenPosX, double screenPosY, double screenWidth, double screenHeight, double zoom) {
+	public void draw(long tickCount,
+					 @Nonnull GraphicsContext graphicsContext,
+					 @Nonnull GameEntity entity,
+					 double screenPosX,
+					 double screenPosY,
+					 double screenWidth,
+					 double screenHeight,
+					 double zoom) {
 		double percent = 1.0 * ((AbstractEnemy) entity).getHealth() / ((AbstractEnemy) entity).getMaxHealth();
+
 
 		graphicsContext.setFill(Color.RED);
 		graphicsContext.fillRect(screenPosX - 5, screenPosY - 8, (screenWidth + 10)*percent, 5);
 		graphicsContext.setStroke(Color.BLACK);
 		graphicsContext.setLineWidth(1);
-<<<<<<< HEAD
 		graphicsContext.strokeRect(screenPosX - 5, screenPosY - 8, screenWidth + 10, 5);
 
-=======
-		graphicsContext.strokeRect(screenPosX, screenPosY - 8, screenWidth, 5);
->>>>>>> parent of ea8740b... Testing
 		graphicsContext.setFill(Color.MAGENTA);
 		graphicsContext.fillRoundRect(screenPosX, screenPosY, screenWidth, screenHeight, 4, 4);
 	}
