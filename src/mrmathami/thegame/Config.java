@@ -56,12 +56,12 @@ public final class Config {
 	public static final long NORMAL_BULLET_COUNT = 1;
 
 	public static final long MACHINE_GUN_BULLET_TTL = 15;
-	public static final long MACHINE_GUN_BULLET_STRENGTH = 30;
+	public static final long MACHINE_GUN_BULLET_STRENGTH = 3;
 	public static final double MACHINE_GUN_BULLET_SPEED = 0.55;
 	public static final long MACHINE_GUN_BULLET_COUNT = 5;
 
 	public static final long SNIPER_BULLET_TTL = 60;
-	public static final long SNIPER_BULLET_STRENGTH = 150;
+	public static final long SNIPER_BULLET_STRENGTH = 0;
 	public static final double SNIPER_BULLET_SPEED = 0.55;
 	public static final long SNIPER_BULLET_COUNT = 1;
 	//endregion
@@ -70,7 +70,7 @@ public final class Config {
 	public static final long NORMAL_TOWER_SPEED = 30;
 	public static final double NORMAL_TOWER_RANGE = 5.0;
 
-	public static final long MACHINE_GUN_TOWER_SPEED = 10;
+	public static final long MACHINE_GUN_TOWER_SPEED = 5;
 	public static final double MACHINE_GUN_TOWER_RANGE = 4.0;
 
 	public static final long SNIPER_TOWER_SPEED = 60;
@@ -102,10 +102,6 @@ public final class Config {
 	public static final double BOSS_ENEMY_SPEED = 0.3;
 	public static final long BOSS_ENEMY_REWARD = 10;
 	//endregion
-
-	public static final String HOST = "127.0.0.1";
-	public static final int PORT = 80;
-	public static final String PROTOCOL = "http";
 
 	private Config() {
 	}
