@@ -16,12 +16,14 @@ public abstract class AbstractTower<E extends AbstractBullet> extends AbstractTi
 	private final long speed;
 	private long numTarget = 1;
 	private long tickDown;
+	private long cost;
 
-	protected AbstractTower(long createdTick, long posX, long posY, double range, long speed) {
+	protected AbstractTower(long createdTick, long posX, long posY, double range, long speed, long cost) {
 		super(createdTick, posX, posY, 1L, 1L);
 		this.range = range;
 		this.speed = speed;
 		this.tickDown = 0;
+		this.cost = cost;
 	}
 
 	@Override
@@ -53,7 +55,9 @@ public abstract class AbstractTower<E extends AbstractBullet> extends AbstractTi
     }
 	// Tower can shoot more than one enemy
 	public final void setNumTarget(long numTarget){ this.numTarget = numTarget;}
-
+	public final long getCost(){
+		return this.cost;
+	}
 	/**
 	 * Create a new bullet. Each tower spawn different type of bullet.
 	 * Override this method and return the type of bullet that your tower shot out.
