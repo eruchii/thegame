@@ -2,8 +2,6 @@ package mrmathami.thegame.drawer;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontSmoothingType;
 import mrmathami.thegame.Config;
 import mrmathami.thegame.GameEntities;
 import mrmathami.thegame.GameField;
@@ -176,44 +174,21 @@ public final class GameDrawer {
 			lastEntity = entity;
 			final EntityDrawer drawer = getEntityDrawer(entity);
 			if (drawer != null) {
-					drawer.draw(gameField.getTickCount(), graphicsContext, entity,
-							(entity.getPosX() - fieldStartPosX) * fieldZoom,
-							(entity.getPosY() - fieldStartPosY) * fieldZoom,
-							entity.getWidth() * fieldZoom,
-							entity.getHeight() * fieldZoom,
-							fieldZoom
-					);
+				drawer.draw(gameField.getTickCount(), graphicsContext, entity,
+						(entity.getPosX() - fieldStartPosX) * fieldZoom,
+						(entity.getPosY() - fieldStartPosY) * fieldZoom,
+						entity.getWidth() * fieldZoom,
+						entity.getHeight() * fieldZoom,
+						fieldZoom
+				);
 			}
 		}
-		graphicsContext.setFontSmoothingType(FontSmoothingType.LCD);
-		graphicsContext.setFill(Color.BLUE);
-		graphicsContext.setFont((new Font("Lucidia Sans",  16)));
-		// Display Normal Tower information
-		graphicsContext.fillText(String.format("Normal Tower : 4 Gold"), Config.SCREEN_WIDTH, 20 );
-		// Display Machine Gun Tower Information
-		graphicsContext.fillText(String.format("Machine Gun Tower : 8 Gold"), Config.SCREEN_WIDTH, 200 );
-		// Display Sniper Tower Information
-		graphicsContext.fillText(String.format("Sniper Tower : 8 Gold"), Config.SCREEN_WIDTH, 380 );
-// 		display HP and Money
 		graphicsContext.setFill(Color.WHITE);
 		graphicsContext.fillText(String.format("HP: %d", gameField.getTarget().getHealth()), 0, Config.SCREEN_HEIGHT - 30.);
         graphicsContext.setFill(Color.WHITE);
         graphicsContext.fillText(String.format("Money: %d", gameField.getMoney()), 0, Config.SCREEN_HEIGHT - 50);
 	}
-	public void drawNewEntities(GameEntity entity) {
-		final EntityDrawer drawer = getEntityDrawer(entity);
-		if (drawer != null) {
-			drawer.draw(gameField.getTickCount(), graphicsContext, entity,
-					(entity.getPosX() - fieldStartPosX) * fieldZoom,
-					(entity.getPosY() - fieldStartPosY) * fieldZoom,
-					entity.getWidth() * fieldZoom,
-					entity.getHeight() * fieldZoom,
-					fieldZoom
-			);
-		}
-		System.out.println(drawer);
-		System.out.println(entity.getClass());
-	}
+
 	public final double screenToFieldPosX(double screenPosX) {
 		return screenPosX * fieldZoom + fieldStartPosX;
 	}
