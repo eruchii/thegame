@@ -14,11 +14,8 @@ import mrmathami.thegame.drawer.EntityDrawer;
 import mrmathami.thegame.drawer.GameDrawer;
 import mrmathami.thegame.drawer.NormalTowerDrawer;
 import mrmathami.thegame.drawer.SmallerEnemyDrawer;
-import mrmathami.thegame.entity.GameEntity;
 import mrmathami.thegame.entity.enemy.SmallerEnemy;
-import mrmathami.thegame.entity.tile.tower.MachineGunTower;
 import mrmathami.thegame.entity.tile.tower.NormalTower;
-import mrmathami.thegame.entity.tile.tower.SniperTower;
 import mrmathami.utilities.ThreadFactoryBuilder;
 
 import java.lang.reflect.Field;
@@ -31,8 +28,6 @@ import java.util.concurrent.TimeUnit;
  * A game controller. Everything about the game should be managed in here.
  */
 public final class GameController extends AnimationTimer {
-	private GameEntity lastEntityToAdd;
-	private GameEntity currentEntityToAdd = null;
 	/**
 	 * Advance stuff. Just don't touch me. Google me if you are curious.
 	 */
@@ -208,29 +203,10 @@ public final class GameController extends AnimationTimer {
 	 * @param mouseEvent the mouse button you press down.
 	 */
 	final void mouseDownHandler(MouseEvent mouseEvent) {
-		// Screen coordinate. Remember to convert to field coordinate
-		if (mouseEvent.getEventType() == MouseEvent.MOUSE_PRESSED) {
-			long posXToDraw,posYToDraw;
-			// Convert to Field position
-			posXToDraw = (long) drawer.screenToFieldPosX(mouseEvent.getX())/1000;
-			posYToDraw =  (long) drawer.screenToFieldPosX(mouseEvent.getY())/1000;
-			// Test the Position
-			// Choose the Tower. Must check to specify that Mouse clicked is the click on the Shop Pane
-			if (posXToDraw >= 30 && posXToDraw <=35) {
-                if (posYToDraw >= 0 && posYToDraw <= 5)
-                    this.lastEntityToAdd = new NormalTower(this.tick, posXToDraw, posYToDraw);
-                else if (posYToDraw >= 6 && posYToDraw <=11)
-                    this.lastEntityToAdd = new MachineGunTower(this.tick, posXToDraw, posYToDraw);
-                else if (posYToDraw >= 12 && posYToDraw<=17)
-                    this.lastEntityToAdd = new SniperTower(this.tick,posXToDraw,posYToDraw);
-            }
-			// Update the Current Tower To add
-			this.currentEntityToAdd = this.lastEntityToAdd;
-			// Test AREAAAA
-            System.out.println(posXToDraw);
-            System.out.println(posYToDraw);
-          //  System.out.println(lastEntityToAdd.getClass());
-		}
+//		mouseEvent.getButton(); // which mouse button?
+//		// Screen coordinate. Remember to convert to field coordinate
+//		drawer.screenToFieldPosX(mouseEvent.getX());
+//		drawer.screenToFieldPosY(mouseEvent.getY());
 	}
 
 	/**
@@ -239,32 +215,13 @@ public final class GameController extends AnimationTimer {
 	 * @param mouseEvent the mouse button you release up.
 	 */
 	final void mouseUpHandler(MouseEvent mouseEvent) {
-		//mouseEvent.getButton(); // which mouse button?
+		mouseEvent.getButton(); // which mouse button?
+		// Screen coordinate. Remember to convert to field coordinate
 
-        // Debug Check the class
-        // System.out.println(currentEntityToAdd.getClass());
-        // Screen coordinate. Remember to convert to field coordinate/
-		long posX = (long) this.drawer.screenToFieldPosX(mouseEvent.getX()/1000);
-		long posY = (long) this.drawer.screenToFieldPosY(mouseEvent.getY()/1000);
-		/*System.out.println(posX);
-		System.out.println(posY);*/
-		boolean check = false;
-		// check if it was mountain or not
-		if ((posY == 4 || posY==12 ) && posX < 26 )
-			check = true;
-		else if (posY == 8 && posX >4 )
-			check = true;
-		else if (posY == 0 || posY == 16) check = true;
-		// Place that towerrrrrr
-		if (check && currentEntityToAdd!=null){
-		    // Add And Spawn Specify Tower
-			if (this.currentEntityToAdd instanceof NormalTower)
-                this.field.addEntities(new NormalTower(this.tick,posX,posY));
-			else if (this.currentEntityToAdd instanceof MachineGunTower)
-				this.field.addEntities(new MachineGunTower(this.tick,posX,posY));
-			else if (this.currentEntityToAdd instanceof SniperTower);
-				this.field.addEntities(new SniperTower(this.tick,posX,posY));
+		if (mouseEvent.getEventType() == MouseEvent.MOUSE_RELEASED){
+			NormalTower t = new NormalTower(this.tick,(long)mouseEvent.getX(),(long)mouseEvent.getY());
+			System.out.println("hi");
+			
 		}
-		System.out.println(currentEntityToAdd.getClass());
 	}
 }
