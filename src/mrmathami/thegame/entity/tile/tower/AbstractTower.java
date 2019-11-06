@@ -6,6 +6,7 @@ import mrmathami.thegame.entity.GameEntity;
 import mrmathami.thegame.entity.UpdatableEntity;
 import mrmathami.thegame.entity.bullet.AbstractBullet;
 import mrmathami.thegame.entity.enemy.AbstractEnemy;
+import mrmathami.thegame.entity.enemy.NormalEnemy;
 import mrmathami.thegame.entity.tile.AbstractTile;
 
 import javax.annotation.Nonnull;
@@ -27,7 +28,7 @@ public abstract class AbstractTower<E extends AbstractBullet> extends AbstractTi
 	}
 
 	@Override
-	public final UpdatableEntity onUpdate(@Nonnull GameField field) {
+	public final void onUpdate(@Nonnull GameField field) {
 		this.tickDown -= 1;
 		if (tickDown <= 0) {
 			// TODO: Find a target and spawn a bullet to that direction.
@@ -42,7 +43,7 @@ public abstract class AbstractTower<E extends AbstractBullet> extends AbstractTi
             for(GameEntity entity: entities){
             	if(bulletCount == 0){
             		this.tickDown = speed;
-                    return null;
+            		return;
 				}
 				if(entity instanceof AbstractEnemy){
 				    AbstractBullet bullet = this.doSpawn(field.getTickCount(),this, (AbstractEnemy) entity);
@@ -51,8 +52,7 @@ public abstract class AbstractTower<E extends AbstractBullet> extends AbstractTi
 				}
 			}
 		}
-        return null;
-    }
+	}
 	// Tower can shoot more than one enemy
 	public final void setNumTarget(long numTarget){ this.numTarget = numTarget;}
 	public final long getCost(){

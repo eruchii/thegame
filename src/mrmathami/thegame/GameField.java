@@ -163,9 +163,13 @@ public final class GameField {
 		}
 		spawnEntities.clear();
 	}
+<<<<<<< HEAD
 	public  void addEntities(@Nonnull GameEntity t){
 		this.entities.add(t);
 	}
+=======
+
+>>>>>>> parent of 9a142d7... Update the shop and Place tower function
     /**
      *  Save game field
      */
