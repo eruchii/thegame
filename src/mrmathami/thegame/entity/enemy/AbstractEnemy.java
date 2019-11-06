@@ -4,7 +4,6 @@ import mrmathami.thegame.GameEntities;
 import mrmathami.thegame.GameField;
 import mrmathami.thegame.entity.*;
 import mrmathami.thegame.entity.tile.Road;
-import mrmathami.thegame.entity.tile.Target;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;
@@ -52,7 +51,7 @@ public abstract class AbstractEnemy extends AbstractEntity implements UpdatableE
 	}
 
 	@Override
-	public final void onUpdate(@Nonnull GameField field) {
+	public final UpdatableEntity onUpdate(@Nonnull GameField field) {
 		final double enemyPosX = getPosX();
 		final double enemyPosY = getPosY();
 		final double enemyWidth = getWidth();
@@ -84,7 +83,8 @@ public abstract class AbstractEnemy extends AbstractEntity implements UpdatableE
 		}
 		setPosX(newPosX);
 		setPosY(newPosY);
-	}
+        return null;
+    }
 
 	@Override
 	public final void onDestroy(@Nonnull GameField field) {

@@ -14,13 +14,12 @@ import mrmathami.thegame.drawer.EntityDrawer;
 import mrmathami.thegame.drawer.GameDrawer;
 import mrmathami.thegame.drawer.NormalTowerDrawer;
 import mrmathami.thegame.drawer.SmallerEnemyDrawer;
+import mrmathami.thegame.entity.GameEntity;
 import mrmathami.thegame.entity.enemy.SmallerEnemy;
-<<<<<<< HEAD
 import mrmathami.thegame.entity.tile.Mountain;
 import mrmathami.thegame.entity.tile.tower.MachineGunTower;
-=======
->>>>>>> parent of 9a142d7... Update the shop and Place tower function
 import mrmathami.thegame.entity.tile.tower.NormalTower;
+import mrmathami.thegame.entity.tile.tower.SniperTower;
 import mrmathami.utilities.ThreadFactoryBuilder;
 
 import java.lang.reflect.Field;
@@ -33,12 +32,9 @@ import java.util.concurrent.TimeUnit;
  * A game controller. Everything about the game should be managed in here.
  */
 public final class GameController extends AnimationTimer {
-<<<<<<< HEAD
 	private GameEntity lastEntityToAdd;
 	private GameEntity currentEntityToAdd = null;
 	private Shop shop;
-=======
->>>>>>> parent of 9a142d7... Update the shop and Place tower function
 	/**
 	 * Advance stuff. Just don't touch me. Google me if you are curious.
 	 */
@@ -215,7 +211,6 @@ public final class GameController extends AnimationTimer {
 	 * @param mouseEvent the mouse button you press down.
 	 */
 	final void mouseDownHandler(MouseEvent mouseEvent) {
-<<<<<<< HEAD
 		// Screen coordinate. Remember to convert to field coordinate
 		if (mouseEvent.getEventType() == MouseEvent.MOUSE_PRESSED) {
 			long posXToDraw,posYToDraw;
@@ -235,12 +230,6 @@ public final class GameController extends AnimationTimer {
 			// Update the Current Tower To add
 			this.currentEntityToAdd = this.lastEntityToAdd;
 		}
-=======
-//		mouseEvent.getButton(); // which mouse button?
-//		// Screen coordinate. Remember to convert to field coordinate
-//		drawer.screenToFieldPosX(mouseEvent.getX());
-//		drawer.screenToFieldPosY(mouseEvent.getY());
->>>>>>> parent of 9a142d7... Update the shop and Place tower function
 	}
 
 	/**
@@ -249,10 +238,8 @@ public final class GameController extends AnimationTimer {
 	 * @param mouseEvent the mouse button you release up.
 	 */
 	final void mouseUpHandler(MouseEvent mouseEvent) {
-		mouseEvent.getButton(); // which mouse button?
-		// Screen coordinate. Remember to convert to field coordinate
+		//mouseEvent.getButton(); // which mouse button?
 
-<<<<<<< HEAD
         // Debug Check the class
         // System.out.println(currentEntityToAdd.getClass());
         // Screen coordinate. Remember to convert to field coordinate/
@@ -279,12 +266,6 @@ public final class GameController extends AnimationTimer {
 				shop.buyTower(new MachineGunTower(field.getTickCount(), posX, posY));
 			else if (this.currentEntityToAdd instanceof SniperTower)
 				shop.buyTower(new SniperTower(field.getTickCount(), posX, posY));
-=======
-		if (mouseEvent.getEventType() == MouseEvent.MOUSE_RELEASED){
-			NormalTower t = new NormalTower(this.tick,(long)mouseEvent.getX(),(long)mouseEvent.getY());
-			System.out.println("hi");
-			
->>>>>>> parent of 9a142d7... Update the shop and Place tower function
 		}
 	}
 }

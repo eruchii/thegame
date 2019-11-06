@@ -63,16 +63,17 @@ public abstract class AbstractBullet extends AbstractEntity implements Updatable
 	}
 
 	@Override
-	public final void onUpdate(@Nonnull GameField field) {
+	public final UpdatableEntity onUpdate(@Nonnull GameField field) {
 		if(this.enemy != null && this.enemy.isDestroyed()){
 			this.doDestroy();
-			return;
+            return null;
 		}
 		this.tickDown -= 1;
 		setPosX(getPosX() + deltaX);
 		setPosY(getPosY() + deltaY);
 		this.calcNewDelta();
-	}
+        return null;
+    }
 
 	@Override
 	public final boolean onEffect(@Nonnull GameField field, @Nonnull LivingEntity livingEntity) {
