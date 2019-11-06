@@ -141,6 +141,7 @@ public final class GameField {
 				}
 			}
 		}
+
 		// 1.3. Update DestroyableEntity
 		final List<GameEntity> destroyedEntities = new ArrayList<>(Config._TILE_MAP_COUNT);
 		for (final GameEntity entity : entities) {
