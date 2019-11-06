@@ -164,6 +164,7 @@ public final class GameField {
 		spawnEntities.clear();
 	}
 	public  void addEntities(@Nonnull GameEntity t){
+		this.spawnEntities.add(t);
 		this.entities.add(t);
 	}
     /**
