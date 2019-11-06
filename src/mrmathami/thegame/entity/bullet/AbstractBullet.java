@@ -1,5 +1,6 @@
 package mrmathami.thegame.entity.bullet;
 
+import mrmathami.thegame.Config;
 import mrmathami.thegame.GameField;
 import mrmathami.thegame.entity.*;
 import mrmathami.thegame.entity.enemy.AbstractEnemy;
@@ -39,8 +40,9 @@ public abstract class AbstractBullet extends AbstractEntity implements Updatable
 
 	protected void calcNewDelta(){
 		if(this.enemy != null) {
-			double diffX = enemy.getPosX() + enemy.getWidth() / 2.0 - this.getPosX() - this.getWidth()/2;
-			double diffY = enemy.getPosY() + enemy.getHeight() / 2.0 - this.getPosY() - this.getHeight()/2;
+			double scale = 0.8;
+			double diffX = enemy.getPosX() + enemy.getWidth()*scale  - this.getPosX();
+			double diffY = enemy.getPosY() + enemy.getHeight()*scale - this.getPosY();
 			double s = Math.sqrt(diffX * diffX + diffY * diffY);
 			double normalize = this.speed / s;
 			this.deltaX = diffX * normalize;
