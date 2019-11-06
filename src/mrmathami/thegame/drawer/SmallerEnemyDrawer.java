@@ -25,12 +25,12 @@ public final class SmallerEnemyDrawer implements EntityDrawer {
 
 
 		graphicsContext.setFill(Color.RED);
-		graphicsContext.fillRect(screenPosX, screenPosY - 8, screenWidth*percent, 5);
+		graphicsContext.fillRect(screenPosX - 5, screenPosY - 8, (screenWidth + 10)*percent, 5);
 		graphicsContext.setStroke(Color.BLACK);
 		graphicsContext.setLineWidth(1);
-		graphicsContext.strokeRect(screenPosX, screenPosY - 8, screenWidth, 5);
-		graphicsContext.drawImage(new Image("http://icons.iconarchive.com/icons/uiconstock/flat-halloween/128/Halloween-Bat-icon.png"),screenPosX,screenPosY,25,25);
-		//graphicsContext.setFill(Color.MAGENTA);
-		//graphicsContext.fillRoundRect(screenPosX, screenPosY, screenWidth, screenHeight, 4, 4);
+		graphicsContext.strokeRect(screenPosX - 5, screenPosY - 8, screenWidth + 10, 5);
+
+		graphicsContext.setFill(Color.MAGENTA);
+		graphicsContext.fillRoundRect(screenPosX, screenPosY, screenWidth, screenHeight, 4, 4);
 	}
 }
