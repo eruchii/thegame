@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.FontSmoothingType;
 import javafx.stage.Stage;
@@ -24,7 +25,7 @@ public final class Main extends Application {
 
 		canvas.setFocusTraversable(true);
 		graphicsContext.setFontSmoothingType(FontSmoothingType.LCD);
-
+		//graphicsContext.drawImage(new Image("flag.png"),3,4);
 
 		// keyboard and mouse events to catch. Add if you need more
 		canvas.setOnKeyPressed(gameController::keyDownHandler);
