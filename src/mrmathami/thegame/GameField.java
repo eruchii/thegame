@@ -1,6 +1,7 @@
 package mrmathami.thegame;
 
 
+import javafx.scene.canvas.GraphicsContext;
 import mrmathami.thegame.entity.*;
 import mrmathami.thegame.entity.tile.Target;
 import mrmathami.thegame.entity.tile.tower.AbstractTower;
@@ -43,6 +44,7 @@ public final class GameField {
 	 * Field width
 	 */
 	private final double width;
+
 	/**
 	 * Field height
 	 */
@@ -125,7 +127,12 @@ public final class GameField {
 	 */
 	public final void tick() {
 		this.tickCount += 1;
-		// 1.1. Update UpdatableEntity
+
+		//1.0 Check if the game is over
+		if (Target.isDestroyed()){
+			//gameController.GameOver();
+		}
+		// 1.1. Update UpdatableEntity && Check for the HP of the Target
 		for (final GameEntity entity : entities) {
 			if (entity instanceof UpdatableEntity) ((UpdatableEntity) entity).onUpdate(this);
 		}

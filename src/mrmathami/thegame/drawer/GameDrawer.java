@@ -185,15 +185,7 @@ public final class GameDrawer {
 					);
 			}
 		}
-		graphicsContext.setFontSmoothingType(FontSmoothingType.LCD);
-		graphicsContext.setFill(Color.BLUE);
-		graphicsContext.setFont((new Font("Lucidia Sans",  16)));
-		// Display Normal Tower information
-		graphicsContext.fillText(String.format("Normal Tower : 4 Gold"), Config.SCREEN_WIDTH, 20 );
-		// Display Machine Gun Tower Information
-		graphicsContext.fillText(String.format("Machine Gun Tower : 8 Gold"), Config.SCREEN_WIDTH, 200 );
-		// Display Sniper Tower Information
-		graphicsContext.fillText(String.format("Sniper Tower : 8 Gold"), Config.SCREEN_WIDTH, 380 );
+
 // 		display HP and Money
 		graphicsContext.setFill(Color.WHITE);
 		graphicsContext.fillText(String.format("HP: %d", gameField.getTarget().getHealth()), 0, Config.SCREEN_HEIGHT - 30.);

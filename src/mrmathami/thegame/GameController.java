@@ -3,26 +3,20 @@ package mrmathami.thegame;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.WindowEvent;
-import mrmathami.thegame.drawer.EntityDrawer;
 import mrmathami.thegame.drawer.GameDrawer;
-import mrmathami.thegame.drawer.NormalTowerDrawer;
-import mrmathami.thegame.drawer.SmallerEnemyDrawer;
 import mrmathami.thegame.entity.GameEntity;
-import mrmathami.thegame.entity.enemy.SmallerEnemy;
 import mrmathami.thegame.entity.tile.Mountain;
+import mrmathami.thegame.entity.tile.Target;
 import mrmathami.thegame.entity.tile.tower.MachineGunTower;
 import mrmathami.thegame.entity.tile.tower.NormalTower;
 import mrmathami.thegame.entity.tile.tower.SniperTower;
 import mrmathami.utilities.ThreadFactoryBuilder;
 
-import java.lang.reflect.Field;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -167,7 +161,9 @@ public final class GameController extends AnimationTimer {
 		Platform.exit();
 		System.exit(0);
 	}
+    final void GameOver(){
 
+    }
 	/**
 	 * Key down handler.
 	 *
@@ -208,29 +204,24 @@ public final class GameController extends AnimationTimer {
 	/**
 	 * Mouse down handler.
 	 *
-	 * @param mouseEvent the mouse button you press down.
+	 * @param mouseEvent
 	 */
-	final void mouseDownHandler(MouseEvent mouseEvent) {
-		// Screen coordinate. Remember to convert to field coordinate
-		if (mouseEvent.getEventType() == MouseEvent.MOUSE_PRESSED) {
-			long posXToDraw,posYToDraw;
-			// Convert to Field position
-			posXToDraw = (long) drawer.screenToFieldPosX(mouseEvent.getX())/1000;
-			posYToDraw =  (long) drawer.screenToFieldPosX(mouseEvent.getY())/1000;
-			// Test the Position
-			// Choose the Tower. Must check to specify that Mouse clicked is the click on the Shop Pane
-			if (posXToDraw >= 30 && posXToDraw <=35) {
-                if (posYToDraw >= 0 && posYToDraw <= 5)
-                    this.lastEntityToAdd = new NormalTower(this.field.getTickCount(), 0, 0);
-                else if (posYToDraw >= 6 && posYToDraw <=11)
-                    this.lastEntityToAdd = new MachineGunTower(this.field.getTickCount(), 0, 0);
-                else if (posYToDraw >= 12 && posYToDraw<=17)
-                    this.lastEntityToAdd = new SniperTower(this.field.getTickCount(),0,0);
-            }
-			// Update the Current Tower To add
-			this.currentEntityToAdd = this.lastEntityToAdd;
+	public void NormalTowerClicked(MouseEvent mouseEvent){
+		this.currentEntityToAdd = new NormalTower(this.field.getTickCount(),0,0);
+		if (mouseEvent.getEventType() == MouseEvent.MOUSE_DRAGGED){
+			long posX = (long) this.drawer.screenToFieldPosX(mouseEvent.getX()/1000);
+			long posY = (long) this.drawer.screenToFieldPosY(mouseEvent.getY()/1000);
+			this.field.addEntities(new NormalTower(this.field.getTickCount(),posX,posY));
 		}
 	}
+
+	public void MachineGunTowerClicked(MouseEvent mouseEvent){
+		this.currentEntityToAdd = new MachineGunTower(this.field.getTickCount(),0,9);
+	}
+	public void SniperTowerClicked(MouseEvent mouseEvent){
+		this.currentEntityToAdd = new SniperTower(this.field.getTickCount(),0,0);
+	}
+
 
 	/**
 	 * Mouse up handler.
@@ -266,6 +257,10 @@ public final class GameController extends AnimationTimer {
 				shop.buyTower(new MachineGunTower(field.getTickCount(), posX, posY));
 			else if (this.currentEntityToAdd instanceof SniperTower)
 				shop.buyTower(new SniperTower(field.getTickCount(), posX, posY));
+
+			this.currentEntityToAdd = null;
 		}
 	}
+
+
 }
