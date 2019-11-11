@@ -19,9 +19,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import javax.annotation.Nonnull;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.util.*;
 
@@ -42,7 +40,7 @@ public class HttpMultiThread implements Runnable{
 
     public final String getToken(){
         String token = null;
-        try (final InputStream stream = this.getClass().getResourceAsStream("/token.txt")){
+        try (final InputStream stream = new FileInputStream(new File("./token.txt"))){
             if(stream == null) throw new IOException("Token file does not exists");
             final Scanner sc = new Scanner(stream);
             token = sc.next();

@@ -164,7 +164,6 @@ public final class GameField {
 			if (entity instanceof SpawnListener) ((SpawnListener) entity).onSpawn(this);
 		}
 		spawnEntities.clear();
-
 	}
 	public  void addEntities(@Nonnull GameEntity t){
 		this.entities.add(t);
