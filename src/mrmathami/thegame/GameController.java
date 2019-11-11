@@ -11,7 +11,6 @@ import javafx.stage.WindowEvent;
 import mrmathami.thegame.drawer.GameDrawer;
 import mrmathami.thegame.entity.GameEntity;
 import mrmathami.thegame.entity.tile.Mountain;
-import mrmathami.thegame.entity.tile.Target;
 import mrmathami.thegame.entity.tile.tower.MachineGunTower;
 import mrmathami.thegame.entity.tile.tower.NormalTower;
 import mrmathami.thegame.entity.tile.tower.SniperTower;
@@ -83,7 +82,7 @@ public final class GameController extends AnimationTimer {
 
 		// The game field. Please consider create another way to load a game field.
 		// TODO: I don't have much time, so, spawn some wall then :)
-		this.field = new GameField(GameStage.load("/stage/demo.txt"));
+		this.field = new GameField(graphicsContext, GameStage.load("/stage/demo.txt"));
 
 		// The drawer. Nothing fun here.
 		this.drawer = new GameDrawer(graphicsContext, field);
@@ -202,7 +201,7 @@ public final class GameController extends AnimationTimer {
 	}
 
 	/**
-	 * Mouse down handler.
+	 * Button Down Handler
 	 *
 	 * @param mouseEvent
 	 */
@@ -222,6 +221,12 @@ public final class GameController extends AnimationTimer {
 		this.currentEntityToAdd = new SniperTower(this.field.getTickCount(),0,0);
 	}
 
+	public void SaveButtonClicked(MouseEvent mouseEvent){
+		field.saveToCloud();
+	}
+	public void LoadButtonClicked(MouseEvent mouseEvent){
+		field.loadFromCloud();
+	}
 
 	/**
 	 * Mouse up handler.
@@ -261,6 +266,7 @@ public final class GameController extends AnimationTimer {
 			this.currentEntityToAdd = null;
 		}
 	}
+
 
 
 }

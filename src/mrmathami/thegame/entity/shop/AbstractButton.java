@@ -16,6 +16,12 @@ public abstract class AbstractButton extends Button{
         this.button.setLayoutY(screenPosY);
         this.button.setMinSize(buttonWidth,buttonHeight);
     }
+    public AbstractButton(double screenPosX,double screenPosY, double buttonWidth, double buttonHeight,String Tower){
+        this.button = new Button(Tower);
+        this.button.setLayoutX(screenPosX);
+        this.button.setLayoutY(screenPosY);
+        this.button.setMinSize(buttonWidth,buttonHeight);
+    }
 
     public Button getButton() {
         return this.button;

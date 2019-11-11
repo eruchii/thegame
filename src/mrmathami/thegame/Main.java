@@ -10,6 +10,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -46,13 +47,25 @@ public final class Main extends Application {
 		// Init the shop
 		final Shop shop = new Shop(shopPane,gameController);
 
+		// Save Button
+		Button saveButton = new Button("Save");
+		saveButton.setLayoutX(Config.SCREEN_WIDTH-40);
+		saveButton.setLayoutY(Config.SCREEN_HEIGHT-80);
+		saveButton.setOnMouseClicked(gameController::SaveButtonClicked);
+
+		//Load Button
+		Button loadButton = new Button("Load");
+		loadButton.setLayoutX(Config.SCREEN_WIDTH-40);
+		loadButton.setLayoutY(Config.SCREEN_HEIGHT-50);
+		loadButton.setOnMouseClicked(gameController::LoadButtonClicked);
+
 		// Tower Placed Action
 		group.setOnMouseReleased(gameController::mouseUpHandler);
 
-		//		Adding all the element
-		group.getChildren().addAll(canvas,shopPane);
+		//	Adding all the element
+		group.getChildren().addAll(canvas,shopPane,saveButton,loadButton);
 
-		//		Screen Setting
+		//	Screen Setting
 		primaryStage.setMinWidth(Config.SCREEN_WIDTH);
 		primaryStage.setResizable(true);
 		primaryStage.setTitle(Config.GAME_NAME);

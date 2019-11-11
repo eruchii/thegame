@@ -13,18 +13,12 @@ import mrmathami.thegame.entity.tile.tower.MachineGunTower;
 import mrmathami.thegame.entity.tile.tower.NormalTower;
 import mrmathami.thegame.entity.tile.tower.SniperTower;
 import mrmathami.thegame.entity.enemy.AbstractEnemy;
-import mrmathami.thegame.entity.enemy.NormalEnemy;
-import mrmathami.thegame.entity.enemy.BossEnemy;
 import mrmathami.thegame.entity.enemy.SmallerEnemy;
-import mrmathami.thegame.entity.enemy.TankerEnemy;
 import mrmathami.thegame.entity.bullet.AbstractBullet;
 
 
-import mrmathami.thegame.HttpMultiThread;
-
 import javax.annotation.Nonnull;
 import java.io.*;
-import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -35,6 +29,7 @@ public final class GameField {
 	@Nonnull private final Set<GameEntity> entities = new LinkedHashSet<>(Config._TILE_MAP_COUNT);
 	@Nonnull private final Collection<GameEntity> unmodifiableEntities = Collections.unmodifiableCollection(entities);
 	@Nonnull private final List<GameEntity> spawnEntities = new ArrayList<>(Config._TILE_MAP_COUNT);
+	@Nonnull private final GraphicsContext graphicsContext;
 	/**
 	 * Field width
 	 */
@@ -58,7 +53,8 @@ public final class GameField {
      */
 	private long money = 5000;
 
-	public GameField(@Nonnull GameStage gameStage) {
+	public GameField(@Nonnull GraphicsContext graphicsContext, @Nonnull GameStage gameStage) {
+		this.graphicsContext = graphicsContext;
 		this.width = gameStage.getWidth();
 		this.height = gameStage.getHeight();
 		this.tickCount = 0;
@@ -167,6 +163,14 @@ public final class GameField {
 	}
 	public  void addEntities(@Nonnull GameEntity t){
 		this.entities.add(t);
+	}
+	/**
+	 * Game over
+	 */
+	public void GameOver(){
+		if(Target.isDestroyed()){
+			graphicsContext.fillText("Game Over",50,50);
+		}
 	}
     /**
      *  Save game field
