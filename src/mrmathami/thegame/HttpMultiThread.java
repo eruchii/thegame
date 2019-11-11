@@ -86,6 +86,7 @@ public class HttpMultiThread implements Runnable{
         } catch (URISyntaxException | IOException e){
             e.printStackTrace();
         }
+        System.out.println("\nSave!");
     }
     public final void loadFromCloud(){
         try{
@@ -107,5 +108,6 @@ public class HttpMultiThread implements Runnable{
         } catch (URISyntaxException | IOException | ParseException e){
             e.printStackTrace();
         }
+        System.out.println("\nLoad!");
     }
 }

@@ -3,27 +3,22 @@ package mrmathami.thegame;
 
 import javafx.scene.canvas.GraphicsContext;
 import mrmathami.thegame.entity.*;
+import mrmathami.thegame.entity.enemy.BossEnemy;
+import mrmathami.thegame.entity.enemy.NormalEnemy;
+import mrmathami.thegame.entity.enemy.TankerEnemy;
 import mrmathami.thegame.entity.tile.Target;
+import mrmathami.thegame.entity.tile.spawner.*;
 import mrmathami.thegame.entity.tile.tower.AbstractTower;
 import mrmathami.thegame.entity.tile.tower.MachineGunTower;
 import mrmathami.thegame.entity.tile.tower.NormalTower;
 import mrmathami.thegame.entity.tile.tower.SniperTower;
+import mrmathami.thegame.entity.enemy.AbstractEnemy;
+import mrmathami.thegame.entity.enemy.NormalEnemy;
+import mrmathami.thegame.entity.enemy.BossEnemy;
+import mrmathami.thegame.entity.enemy.SmallerEnemy;
+import mrmathami.thegame.entity.enemy.TankerEnemy;
+import mrmathami.thegame.entity.bullet.AbstractBullet;
 
-
-import org.apache.http.HttpHeaders;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
-import org.apache.http.client.utils.URIBuilder;
 
 import mrmathami.thegame.HttpMultiThread;
 
@@ -61,7 +56,7 @@ public final class GameField {
 	/**
      * Money
      */
-	private long money = 0;
+	private long money = 5000;
 
 	public GameField(@Nonnull GameStage gameStage) {
 		this.width = gameStage.getWidth();
@@ -169,6 +164,7 @@ public final class GameField {
 			if (entity instanceof SpawnListener) ((SpawnListener) entity).onSpawn(this);
 		}
 		spawnEntities.clear();
+
 	}
 	public  void addEntities(@Nonnull GameEntity t){
 		this.entities.add(t);
@@ -180,11 +176,22 @@ public final class GameField {
 		ArrayList<String> file = new ArrayList<>();
 		file.add(String.format("%s %d\n","Money", this.money));
 		file.add(String.format("%s %d\n", "TargetHP", Target.getHealth()));
+		file.add(String.format("%s %d\n","Tick", this.getTickCount()));
 		for (GameEntity entity : entities) {
-			if(entity instanceof AbstractTower) {
+			if(entity instanceof AbstractTower || entity instanceof AbstractEnemy) {
 				String[] classname = entity.getClass().toString().split("class ")[1].split("[. ]+");
 				String entityName = classname[classname.length - 1];
-				file.add(String.format("%s %f %f\n", entityName, entity.getPosX(), entity.getPosY()));
+				file.add(String.format("%s %d %f %f\n", entityName, entity.getCreatedTick(),
+						entity.getPosX(), entity.getPosY())
+				);
+			} else if(entity instanceof AbstractSpawner){
+				String[] classname = entity.getClass().toString().split("class ")[1].split("[. ]+");
+				String entityName = classname[classname.length - 1];
+				file.add(String.format("%s %d %f %f %f %f %d %d %d\n",
+						entityName, entity.getCreatedTick(), entity.getPosX(), entity.getPosY(), entity.getWidth(), entity.getHeight(),
+						((AbstractSpawner) entity).getSpawnInterval(), ((AbstractSpawner) entity).getInitialDelay(),
+						((AbstractSpawner) entity).getNumOfSpawn())
+				);
 			}
 		}
 		return file;
@@ -222,7 +229,7 @@ public final class GameField {
 	    Scanner scanner = new Scanner(stream);
 		final List<GameEntity> destroyedEntities = new ArrayList<>(Config._TILE_MAP_COUNT);
 		for(GameEntity entity: entities){
-			if(entity instanceof AbstractTower){
+			if(entity instanceof AbstractTower || entity instanceof AbstractEnemy || entity instanceof AbstractBullet){
 				destroyedEntities.add(entity);
 			}
 		}
@@ -231,24 +238,102 @@ public final class GameField {
 		final int n = scanner.nextInt();
 		for (int i = 0; i < n; i++) {
 			String type = scanner.next();
+			try{
 			if ("Money".equals(type)) {
 				int m = scanner.nextInt();
 				this.money = m;
 			} else if ("TargetHP".equals(type)) {
 				int hp = scanner.nextInt();
 				this.Target.setHealth(hp);
-			} else if ("NormalTower".equals(type)) {
+			} else if("Tick".equals(type)){
+				int tick = scanner.nextInt();
+				this.tickCount = tick+1;
+			}	else if ("NormalTower".equals(type)) {
+				long tick = scanner.nextInt();
 				double x = scanner.nextDouble();
 				double y = scanner.nextDouble();
-				entities.add(new NormalTower(0, (long) x, (long) y));
+				entities.add(new NormalTower(tick, (long) x, (long) y));
 			} else if ("MachineGunTower".equals(type)) {
+				long tick = scanner.nextInt();
 				double x = scanner.nextDouble();
 				double y = scanner.nextDouble();
-				entities.add(new MachineGunTower(0, (long) x, (long) y));
+				entities.add(new MachineGunTower(tick, (long) x, (long) y));
 			} else if ("SniperTower".equals(type)) {
+				long tick = scanner.nextInt();
 				double x = scanner.nextDouble();
 				double y = scanner.nextDouble();
-				entities.add(new SniperTower(0, (long) x, (long) y));
+				entities.add(new SniperTower(tick, (long) x, (long) y));
+			} else if("NormalEnemy".equals(type)){
+				long tick = scanner.nextInt();
+				double x = scanner.nextDouble();
+				double y = scanner.nextDouble();
+				entities.add(new NormalEnemy(tick, x, y));
+			} else if("BossEnemy".equals(type)){
+				long tick = scanner.nextInt();
+				double x = scanner.nextDouble();
+				double y = scanner.nextDouble();
+				entities.add(new BossEnemy(tick, x, y));
+			} else if("SmallerEnemy".equals(type)){
+				long tick = scanner.nextInt();
+				double x = scanner.nextDouble();
+				double y = scanner.nextDouble();
+				entities.add(new SmallerEnemy(tick, x, y));
+			} else if("TankerEnemy".equals(type)){
+				long tick = scanner.nextInt();
+				double x = scanner.nextDouble();
+				double y = scanner.nextDouble();
+				entities.add(new TankerEnemy(tick, x, y));
+			} else if("NormalSpawner".equals(type)){
+				int tick = scanner.nextInt();
+				double x = scanner.nextDouble();
+				double y = scanner.nextDouble();
+				double w = scanner.nextDouble();
+				double h = scanner.nextDouble();
+				int spawnInterval = scanner.nextInt();
+				int initialDelay = scanner.nextInt();
+				int numOfSpawn = scanner.nextInt();
+				entities.add(new NormalSpawner(tick, (long)x, (long)y, (long)w, (long)h,
+						spawnInterval, initialDelay, numOfSpawn)
+				);
+			} else if("BossSpawner".equals(type)){
+				int tick = scanner.nextInt();
+				double x = scanner.nextDouble();
+				double y = scanner.nextDouble();
+				double w = scanner.nextDouble();
+				double h = scanner.nextDouble();
+				int spawnInterval = scanner.nextInt();
+				int initialDelay = scanner.nextInt();
+				int numOfSpawn = scanner.nextInt();
+				entities.add(new BossSpawner(tick, (long)x, (long)y, (long)w, (long)h,
+						spawnInterval, initialDelay, numOfSpawn)
+				);
+			} else if("SmallerSpawner".equals(type)){
+				int tick = scanner.nextInt();
+				double x = scanner.nextDouble();
+				double y = scanner.nextDouble();
+				double w = scanner.nextDouble();
+				double h = scanner.nextDouble();
+				int spawnInterval = scanner.nextInt();
+				int initialDelay = scanner.nextInt();
+				int numOfSpawn = scanner.nextInt();
+				entities.add(new SmallerSpawner(tick, (long)x, (long)y, (long)w, (long)h,
+						spawnInterval, initialDelay, numOfSpawn)
+				);
+			} else if("TankerSpawner".equals(type)){
+				int tick = scanner.nextInt();
+				double x = scanner.nextDouble();
+				double y = scanner.nextDouble();
+				double w = scanner.nextDouble();
+				double h = scanner.nextDouble();
+				int spawnInterval = scanner.nextInt();
+				int initialDelay = scanner.nextInt();
+				int numOfSpawn = scanner.nextInt();
+				entities.add(new TankerSpawner(tick, (long)x, (long)y, (long)w, (long)h,
+						spawnInterval, initialDelay, numOfSpawn)
+				);
+			}
+			} catch (InputMismatchException e){
+				System.out.println(type);
 			}
 		}
 		System.out.println("Loaded");

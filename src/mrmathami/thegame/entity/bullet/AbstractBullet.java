@@ -40,7 +40,6 @@ public abstract class AbstractBullet extends AbstractEntity implements Updatable
 
 	protected void calcNewDelta(){
 		if(this.enemy != null) {
-		    System.out.printf("%f %f\n",enemy.getHeight(), enemy.getWidth());
 		    double side = Math.sqrt(Config.TILE_SIZE);
 			double centerEnemyX = enemy.getPosX() + enemy.getWidth()*side/2000;
 			double centerEnemyY = enemy.getPosY() + enemy.getHeight()*side/2000;

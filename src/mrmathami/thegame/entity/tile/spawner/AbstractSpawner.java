@@ -13,6 +13,7 @@ public abstract class AbstractSpawner<E extends AbstractEnemy> extends AbstractT
 	private final long spawnInterval;
 	private long tickDown;
 	private long numOfSpawn;
+	private long initialDelay;
 
 	protected AbstractSpawner(long createdTick, long posX, long posY, long width, long height, double spawningSize, @Nonnull Class<E> spawningClass, long spawnInterval, long initialDelay, long numOfSpawn) {
 		super(createdTick, posX, posY, width, height);
@@ -20,8 +21,13 @@ public abstract class AbstractSpawner<E extends AbstractEnemy> extends AbstractT
 		this.spawningClass = spawningClass;
 		this.spawnInterval = spawnInterval;
 		this.tickDown = initialDelay;
+		this.initialDelay = initialDelay;
 		this.numOfSpawn = numOfSpawn;
 	}
+
+	public long getSpawnInterval(){ return this.spawnInterval;}
+	public long getInitialDelay(){return this.initialDelay; }
+	public long getNumOfSpawn(){return this.numOfSpawn; }
 
 	@Override
 	public final UpdatableEntity onUpdate(@Nonnull GameField field) {
