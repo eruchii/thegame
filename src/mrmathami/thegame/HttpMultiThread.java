@@ -71,7 +71,6 @@ public class HttpMultiThread implements Runnable{
         for(String s: file) strSave.append(s);
         String resSave = String.valueOf(strSave);
         String encodedSave = Base64.getEncoder().encodeToString(resSave.getBytes());
-
         try{
             String url = getURL("/sendsavefile", this.token);
             CloseableHttpClient httpClient = HttpClients.createDefault();

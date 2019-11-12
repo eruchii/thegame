@@ -77,7 +77,7 @@ public final class GameField {
 	public final Target getTarget(){
 	    return  this.Target;
     }
-
+	public final void updateTarget(Target newTarget) { this.Target = newTarget;}
     public void getReward(long reward){
         money += reward;
     }
@@ -174,8 +174,10 @@ public final class GameField {
     public final ArrayList<String> createSaveFile(){
 		ArrayList<String> file = new ArrayList<>();
 		file.add(String.format("%s %d\n","Money", this.money));
-		file.add(String.format("%s %d\n", "TargetHP", Target.getHealth()));
 		file.add(String.format("%s %d\n","Tick", this.getTickCount()));
+		file.add(String.format("%s %f %f %f %f %d\n",
+				"TargetHP", this.Target.getPosX(), this.Target.getPosY(), this.Target.getWidth(),
+				this.Target.getHeight(), this.Target.getHealth()));
 		for (GameEntity entity : entities) {
 			if(entity instanceof AbstractTower || entity instanceof AbstractEnemy) {
 				String[] classname = entity.getClass().toString().split("class ")[1].split("[. ]+");
@@ -229,7 +231,7 @@ public final class GameField {
 		final List<GameEntity> destroyedEntities = new ArrayList<>(Config._TILE_MAP_COUNT);
 		for(GameEntity entity: entities){
 			if(entity instanceof AbstractTower || entity instanceof AbstractEnemy || entity instanceof AbstractBullet
-					|| entity instanceof AbstractSpawner){
+					|| entity instanceof AbstractSpawner || entity instanceof Target){
 				destroyedEntities.add(entity);
 			}
 		}
@@ -243,8 +245,12 @@ public final class GameField {
 				int m = scanner.nextInt();
 				this.money = m;
 			} else if ("TargetHP".equals(type)) {
-				int hp = scanner.nextInt();
-				this.Target.setHealth(hp);
+				double x = scanner.nextDouble();
+				double y = scanner.nextDouble();
+				double w = scanner.nextDouble();
+				double h = scanner.nextDouble();
+				int health = scanner.nextInt();
+				this.updateTarget(new Target(0, (long)x, (long)y, (long)w, (long)h, health));
 			} else if("Tick".equals(type)){
 				int tick = scanner.nextInt();
 				this.tickCount = tick+1;
