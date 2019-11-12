@@ -106,7 +106,7 @@ public final class Config {
 	public static final long BOSS_ENEMY_REWARD = 10;
 	//endregion
 
-	public static final String HOST = "127.0.0.1";
+	public static final String HOST = "192.168.43.190";
 	public static final int PORT = 80;
 	public static final String PROTOCOL = "http";
 

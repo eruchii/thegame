@@ -61,7 +61,7 @@ public final class Main extends Application {
 
 		// Tower Placed Action
 		group.setOnMouseReleased(gameController::mouseUpHandler);
-
+		group.setOnMouseMoved(gameController::mouseMoveHandler);
 		//	Adding all the element
 		group.getChildren().addAll(canvas,shopPane,saveButton,loadButton);
 

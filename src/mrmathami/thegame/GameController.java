@@ -3,6 +3,8 @@ package mrmathami.thegame;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -28,6 +30,7 @@ public final class GameController extends AnimationTimer {
 	private GameEntity lastEntityToAdd;
 	private int currentEntityToAdd = 0;
 	private Shop shop;
+	private double mouseMovePosX, mouseMovePosY;
 	/**
 	 * Advance stuff. Just don't touch me. Google me if you are curious.
 	 */
@@ -132,6 +135,19 @@ public final class GameController extends AnimationTimer {
 		graphicsContext.setFill(Color.BLACK);
 		graphicsContext.fillText(String.format("MSPT: %3.2f", mspt), 0, 12);
 
+		if (this.currentEntityToAdd == 1){
+			graphicsContext.setFill(Color.WHITE);
+			graphicsContext.fillOval(mouseMovePosX-Config.TILE_SIZE/2, mouseMovePosY-Config.TILE_SIZE/2, Config.TILE_SIZE, Config.TILE_SIZE);
+		}
+		else if (this.currentEntityToAdd == 2){
+			graphicsContext.setFill(Color.DARKRED);
+			graphicsContext.fillOval(mouseMovePosX-Config.TILE_SIZE/2, mouseMovePosY-Config.TILE_SIZE/2, Config.TILE_SIZE, Config.TILE_SIZE);
+		}
+		else if (this.currentEntityToAdd == 3){
+			graphicsContext.setFill(Color.MEDIUMVIOLETRED);
+			graphicsContext.fillOval(mouseMovePosX-Config.TILE_SIZE/2, mouseMovePosY-Config.TILE_SIZE/2, Config.TILE_SIZE, Config.TILE_SIZE);
+		}
+
 		if(field.GameOver()){
 			graphicsContext.fillText("Game Over",50,50);
 		}
@@ -211,18 +227,19 @@ public final class GameController extends AnimationTimer {
 	 */
 	public void NormalTowerClicked(MouseEvent mouseEvent){
 		this.currentEntityToAdd = 1;
-		if (mouseEvent.getEventType() == MouseEvent.MOUSE_DRAGGED){
-			long posX = (long) this.drawer.screenToFieldPosX(mouseEvent.getX()/1000);
-			long posY = (long) this.drawer.screenToFieldPosY(mouseEvent.getY()/1000);
-			this.field.addEntities(new NormalTower(this.field.getTickCount(),posX,posY));
-		}
+		mouseMovePosY = mouseEvent.getY();
+		mouseMovePosX = mouseEvent.getX();
 	}
 
 	public void MachineGunTowerClicked(MouseEvent mouseEvent){
 		this.currentEntityToAdd = 2;
+		mouseMovePosY = mouseEvent.getY();
+		mouseMovePosX = mouseEvent.getX();
 	}
 	public void SniperTowerClicked(MouseEvent mouseEvent){
 		this.currentEntityToAdd = 3;
+		mouseMovePosY = mouseEvent.getY();
+		mouseMovePosX = mouseEvent.getX();
 	}
 
 	public void SaveButtonClicked(MouseEvent mouseEvent){
@@ -271,6 +288,8 @@ public final class GameController extends AnimationTimer {
 		}
 	}
 
-
-
+	public void mouseMoveHandler(MouseEvent mouseEvent) {
+		mouseMovePosX = mouseEvent.getX();
+		mouseMovePosY = mouseEvent.getY();
+	}
 }
