@@ -29,7 +29,6 @@ public final class GameField {
 	@Nonnull private final Set<GameEntity> entities = new LinkedHashSet<>(Config._TILE_MAP_COUNT);
 	@Nonnull private final Collection<GameEntity> unmodifiableEntities = Collections.unmodifiableCollection(entities);
 	@Nonnull private final List<GameEntity> spawnEntities = new ArrayList<>(Config._TILE_MAP_COUNT);
-	@Nonnull private final GraphicsContext graphicsContext;
 	/**
 	 * Field width
 	 */
@@ -53,8 +52,7 @@ public final class GameField {
      */
 	private long money = 5000;
 
-	public GameField(@Nonnull GraphicsContext graphicsContext, @Nonnull GameStage gameStage) {
-		this.graphicsContext = graphicsContext;
+	public GameField(@Nonnull GameStage gameStage) {
 		this.width = gameStage.getWidth();
 		this.height = gameStage.getHeight();
 		this.tickCount = 0;
@@ -121,7 +119,7 @@ public final class GameField {
 
 		//1.0 Check if the game is over
 		if (Target.isDestroyed()){
-			//gameController.GameOver();
+			return;
 		}
 		// 1.1. Update UpdatableEntity && Check for the HP of the Target
 		for (final GameEntity entity : entities) {
@@ -167,10 +165,8 @@ public final class GameField {
 	/**
 	 * Game over
 	 */
-	public void GameOver(){
-		if(Target.isDestroyed()){
-			graphicsContext.fillText("Game Over",50,50);
-		}
+	public boolean GameOver(){
+		return Target.isDestroyed();
 	}
     /**
      *  Save game field
@@ -232,7 +228,8 @@ public final class GameField {
 	    Scanner scanner = new Scanner(stream);
 		final List<GameEntity> destroyedEntities = new ArrayList<>(Config._TILE_MAP_COUNT);
 		for(GameEntity entity: entities){
-			if(entity instanceof AbstractTower || entity instanceof AbstractEnemy || entity instanceof AbstractBullet){
+			if(entity instanceof AbstractTower || entity instanceof AbstractEnemy || entity instanceof AbstractBullet
+					|| entity instanceof AbstractSpawner){
 				destroyedEntities.add(entity);
 			}
 		}

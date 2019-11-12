@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
  */
 public final class GameController extends AnimationTimer {
 	private GameEntity lastEntityToAdd;
-	private GameEntity currentEntityToAdd = null;
+	private int currentEntityToAdd = 0;
 	private Shop shop;
 	/**
 	 * Advance stuff. Just don't touch me. Google me if you are curious.
@@ -82,7 +82,7 @@ public final class GameController extends AnimationTimer {
 
 		// The game field. Please consider create another way to load a game field.
 		// TODO: I don't have much time, so, spawn some wall then :)
-		this.field = new GameField(graphicsContext, GameStage.load("/stage/demo.txt"));
+		this.field = new GameField(GameStage.load("/stage/demo.txt"));
 
 		// The drawer. Nothing fun here.
 		this.drawer = new GameDrawer(graphicsContext, field);
@@ -131,6 +131,10 @@ public final class GameController extends AnimationTimer {
 		final double mspt = (System.nanoTime() - startNs) / 1000000.0;
 		graphicsContext.setFill(Color.BLACK);
 		graphicsContext.fillText(String.format("MSPT: %3.2f", mspt), 0, 12);
+
+		if(field.GameOver()){
+			graphicsContext.fillText("Game Over",50,50);
+		}
 
 		// if we have time to spend, do a spin
 		while (currentTick == tick) Thread.onSpinWait();
@@ -206,7 +210,7 @@ public final class GameController extends AnimationTimer {
 	 * @param mouseEvent
 	 */
 	public void NormalTowerClicked(MouseEvent mouseEvent){
-		this.currentEntityToAdd = new NormalTower(this.field.getTickCount(),0,0);
+		this.currentEntityToAdd = 1;
 		if (mouseEvent.getEventType() == MouseEvent.MOUSE_DRAGGED){
 			long posX = (long) this.drawer.screenToFieldPosX(mouseEvent.getX()/1000);
 			long posY = (long) this.drawer.screenToFieldPosY(mouseEvent.getY()/1000);
@@ -215,10 +219,10 @@ public final class GameController extends AnimationTimer {
 	}
 
 	public void MachineGunTowerClicked(MouseEvent mouseEvent){
-		this.currentEntityToAdd = new MachineGunTower(this.field.getTickCount(),0,9);
+		this.currentEntityToAdd = 2;
 	}
 	public void SniperTowerClicked(MouseEvent mouseEvent){
-		this.currentEntityToAdd = new SniperTower(this.field.getTickCount(),0,0);
+		this.currentEntityToAdd = 3;
 	}
 
 	public void SaveButtonClicked(MouseEvent mouseEvent){
@@ -254,16 +258,16 @@ public final class GameController extends AnimationTimer {
 			}
 		}
 		// Place that towerrrrrr
-		if (check && currentEntityToAdd!=null){
+		if (check && currentEntityToAdd!=0){
 		    // Add And Spawn Specify Tower
-			if (this.currentEntityToAdd instanceof NormalTower)
+			if (this.currentEntityToAdd == 1)
                 shop.buyTower(new NormalTower(field.getTickCount(), posX, posY));
-			else if (this.currentEntityToAdd instanceof MachineGunTower)
+			else if (this.currentEntityToAdd == 2)
 				shop.buyTower(new MachineGunTower(field.getTickCount(), posX, posY));
-			else if (this.currentEntityToAdd instanceof SniperTower)
+			else if (this.currentEntityToAdd == 3)
 				shop.buyTower(new SniperTower(field.getTickCount(), posX, posY));
 
-			this.currentEntityToAdd = null;
+			this.currentEntityToAdd = 0;
 		}
 	}
 
