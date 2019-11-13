@@ -46,7 +46,10 @@ public final class GameField {
 	 * Target
 	 */
 	private Target Target;
+	private AbstractSpawner spawner = null;
 
+	private int currentWave = 0;
+	private int waveCount = 0;
 	/**
      * Money
      */
@@ -61,6 +64,7 @@ public final class GameField {
 		entities.addAll(gameStage.getEntities());
 		for(GameEntity entity: entities){
 			if(entity instanceof Target) this.Target = (Target) entity;
+			if(entity instanceof AbstractSpawner) this.spawner = (AbstractSpawner) entity;
 		}
 	}
 
@@ -120,14 +124,19 @@ public final class GameField {
 	 * 3. Spawn Entity: Add entities that are marked to be spawned.
 	 */
 	public final void tick() {
+		//1.0 Check if the game is over or pausing
 		if (Target.isDestroyed() || this.pause){
 			return;
 		}
 		this.tickCount += 1;
-		//1.0 Check if the game is over
-		// 1.1. Update UpdatableEntity && Check for the HP of the Target
+
+		// refill spawner
+
+		// 1.1. Update UpdatableEntity && get spawner
+
 		for (final GameEntity entity : entities) {
 			if (entity instanceof UpdatableEntity) ((UpdatableEntity) entity).onUpdate(this);
+			if (entity instanceof AbstractSpawner && this.spawner == null) this.spawner = (AbstractSpawner) entity;
 		}
 
 		// 1.2. Update EffectEntity & LivingEntity
@@ -144,6 +153,9 @@ public final class GameField {
 		// 1.3. Update DestroyableEntity
 		final List<GameEntity> destroyedEntities = new ArrayList<>(Config._TILE_MAP_COUNT);
 		for (final GameEntity entity : entities) {
+			if(entity instanceof AbstractSpawner){
+				if(((AbstractSpawner)entity).getNumOfSpawn() == 0) destroyedEntities.add(entity);
+			}
 			if (entity instanceof DestroyableEntity && ((DestroyableEntity) entity).isDestroyed()) {
 				if (entity instanceof DestroyListener) ((DestroyListener) entity).onDestroy(this);
 				destroyedEntities.add(entity);
@@ -162,9 +174,47 @@ public final class GameField {
 			if (entity instanceof SpawnListener) ((SpawnListener) entity).onSpawn(this);
 		}
 		spawnEntities.clear();
-	}
-	public  void addEntities(@Nonnull GameEntity t){
-		this.entities.add(t);
+		//4. refill spawner
+		boolean hasEnemy = false;
+		boolean hasSpawner = false;
+		for(final GameEntity entity: entities){
+			if(entity instanceof AbstractEnemy){
+				hasEnemy = true;
+				break;
+			}
+			if(entity instanceof AbstractSpawner){
+				hasSpawner = true;
+			}
+		}
+		if(!hasSpawner && this.spawner.getNumOfSpawn() > 0 && !hasEnemy) this.doSpawn(this.spawner);
+		if((this.spawner.getNumOfSpawn() == 0 && !hasEnemy)){
+			this.currentWave = (this.currentWave + 1) % 4;
+			if(this.currentWave == 1) {
+				this.spawner = new NormalSpawner(this.getTickCount(),
+						(long)this.spawner.getPosX(), (long)this.spawner.getPosY(), (long)this.spawner.getWidth(),
+						(long)this.spawner.getHeight(), Config.NORMAL_SPAWNER_INTERVAL,
+						Config.NORMAL_SPAWNER_DELAY, Config.NORMAL_SPAWNER_NUM + waveCount);
+
+			} else if(this.currentWave == 2){
+				this.spawner = new SmallerSpawner(this.getTickCount(),
+						(long)this.spawner.getPosX(), (long)this.spawner.getPosY(), (long)this.spawner.getWidth(),
+						(long)this.spawner.getHeight(), Config.SMALLER_SPAWNER_INTERVAL,
+						Config.SMALLER_SPAWNER_DELAY, Config.SMALLER_SPAWNER_NUM + waveCount);
+			} else if(this.currentWave == 3){
+				this.spawner = new TankerSpawner(this.getTickCount(),
+						(long)this.spawner.getPosX(), (long)this.spawner.getPosY(), (long)this.spawner.getWidth(),
+						(long)this.spawner.getHeight(), Config.TANKER_SPAWNER_INTERVAL,
+						Config.TANKER_SPAWNER_DELAY, Config.TANKER_SPAWNER_NUM + waveCount);
+				this.doSpawn(this.spawner);
+			} else if(this.currentWave == 0){
+				this.spawner = new BossSpawner(this.getTickCount(),
+						(long)this.spawner.getPosX(), (long)this.spawner.getPosY(), (long)this.spawner.getWidth(),
+						(long)this.spawner.getHeight(), Config.BOSS_SPAWNER_INTERVAL,
+						Config.BOSS_SPAWNER_DELAY, Config.BOSS_SPAWNER_NUM + waveCount);
+				waveCount++;
+			}
+			this.doSpawn(this.spawner);
+		}
 	}
 	/**
 	 * Game over
@@ -183,6 +233,8 @@ public final class GameField {
 				"TargetHP", this.Target.getPosX(), this.Target.getPosY(), this.Target.getWidth(),
 				this.Target.getHeight(), this.Target.getHealth())
 		);
+		file.add(String.format("%s %d\n","CurrentWave",this.currentWave));
+		file.add(String.format("%s %d\n","WaveCount", this.waveCount));
 		for (GameEntity entity : entities) {
 			String[] classname = entity.getClass().toString().split("class ")[1].split("[. ]+");
 			String entityName = classname[classname.length - 1];
@@ -234,13 +286,11 @@ public final class GameField {
 		final List<GameEntity> destroyedEntities = new ArrayList<>(Config._TILE_MAP_COUNT);
 		for(GameEntity entity: entities){
 			if(entity instanceof AbstractTower || entity instanceof AbstractEnemy || entity instanceof AbstractBullet
-					|| entity instanceof AbstractSpawner || entity instanceof Target){
-				if(entity instanceof Target) System.out.println(Target.getHealth());
+					|| entity instanceof AbstractSpawner || entity instanceof Target || entity instanceof AbstractSpawner){
 				destroyedEntities.add(entity);
 			}
 		}
 		entities.removeAll(destroyedEntities);
-
 		final int n = scanner.nextInt();
 		for (int i = 0; i < n; i++) {
 			String type = scanner.next();
@@ -260,7 +310,13 @@ public final class GameField {
 			} else if("Tick".equals(type)){
 				int tick = scanner.nextInt();
 				this.tickCount = tick+1;
-			}	else if ("NormalTower".equals(type)) {
+			} else if("CurrentWave".equals(type)){
+				int wave = scanner.nextInt();
+				this.currentWave = wave;
+			} else if("WaveCount".equals(type)){
+				int count = scanner.nextInt();
+				this.waveCount = count;
+			} else if ("NormalTower".equals(type)) {
 				long tick = scanner.nextInt();
 				double x = scanner.nextDouble();
 				double y = scanner.nextDouble();

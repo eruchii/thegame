@@ -31,7 +31,7 @@ public class Shop {
         if(field.getTarget().isDestroyed()) return;
         if(field.getMoney() - tower.getCost() < 0) return;
         field.getReward(-tower.getCost());
-        field.addEntities(tower);
+        field.doSpawn(tower);
     }
     public Shop(Pane pane,GameController gameController){
 

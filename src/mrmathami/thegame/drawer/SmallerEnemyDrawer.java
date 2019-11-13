@@ -38,14 +38,30 @@ public final class SmallerEnemyDrawer implements EntityDrawer {
 //		graphicsContext.setFill(Color.MAGENTA);
 //		graphicsContext.fillRoundRect(screenPosX, screenPosY, screenWidth, screenHeight, 4, 4);
 		List<String> animated = new ArrayList<>();
-		animated.add("/PNG/Skeleton/1.png");
-		animated.add("/PNG/Skeleton/1.png");
-		animated.add("/PNG/Skeleton/2.png");
-		animated.add("/PNG/Skeleton/2.png");
-		animated.add("/PNG/Skeleton/3.png");
-		animated.add("/PNG/Skeleton/3.png");
-		animated.add("/PNG/Skeleton/4.png");
-		animated.add("/PNG/Skeleton/4.png");
+		animated.add("/PNG/Succubus/1.png");
+		animated.add("/PNG/Succubus/1.png");
+		animated.add("/PNG/Succubus/1.png");
+		animated.add("/PNG/Succubus/1.png");
+		animated.add("/PNG/Succubus/1.png");
+		animated.add("/PNG/Succubus/1.png");
+		animated.add("/PNG/Succubus/2.png");
+		animated.add("/PNG/Succubus/2.png");
+		animated.add("/PNG/Succubus/2.png");
+		animated.add("/PNG/Succubus/2.png");
+		animated.add("/PNG/Succubus/2.png");
+		animated.add("/PNG/Succubus/2.png");
+		animated.add("/PNG/Succubus/3.png");
+		animated.add("/PNG/Succubus/3.png");
+		animated.add("/PNG/Succubus/3.png");
+		animated.add("/PNG/Succubus/3.png");
+		animated.add("/PNG/Succubus/3.png");
+		animated.add("/PNG/Succubus/3.png");
+		animated.add("/PNG/Succubus/4.png");
+		animated.add("/PNG/Succubus/4.png");
+		animated.add("/PNG/Succubus/4.png");
+		animated.add("/PNG/Succubus/4.png");
+		animated.add("/PNG/Succubus/4.png");
+		animated.add("/PNG/Succubus/4.png");
 
 		String url = animated.get(((AbstractEnemy) entity).getLT() % animated.size());
 		String path = String.valueOf(this.getClass().getResource(url));
@@ -59,7 +75,7 @@ public final class SmallerEnemyDrawer implements EntityDrawer {
 		double directionY = ((AbstractEnemy) entity).getDirectionY();
 		double SQRT_2 = Math.sqrt(2.0) / 2.0;
 
-		ImageView iv = new ImageView(new Image(path, newW, newH, false, false));
+		ImageView iv = new ImageView(new Image(path, newW, newH, true, true));
 		if((directionX == 1.0 && directionY == 0.0) ||
 				(directionX == SQRT_2 && directionY == SQRT_2)) iv.setRotate(0);
 		else if((directionX == -1.0 && directionY == 0.0) ||

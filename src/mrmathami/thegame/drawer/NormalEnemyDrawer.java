@@ -66,7 +66,7 @@ public final class NormalEnemyDrawer implements EntityDrawer {
         double directionY = ((AbstractEnemy) entity).getDirectionY();
         double SQRT_2 = Math.sqrt(2.0) / 2.0;
 
-        ImageView iv = new ImageView(new Image(path, newW, newH, false, false));
+        ImageView iv = new ImageView(new Image(path, newW, newH, true, true));
         if((directionX == 1.0 && directionY == 0.0) ||
 				(directionX == SQRT_2 && directionY == SQRT_2)) iv.setRotate(0);
         else if((directionX == -1.0 && directionY == 0.0) ||

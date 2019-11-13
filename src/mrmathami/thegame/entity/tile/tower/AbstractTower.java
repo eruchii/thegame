@@ -9,7 +9,10 @@ import mrmathami.thegame.entity.enemy.AbstractEnemy;
 import mrmathami.thegame.entity.tile.AbstractTile;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 public abstract class AbstractTower<E extends AbstractBullet> extends AbstractTile implements UpdatableEntity {
 	private final double range;
@@ -37,19 +40,23 @@ public abstract class AbstractTower<E extends AbstractBullet> extends AbstractTi
 			        field.getEntities(), GameEntity.class ,
                     this.getPosX() - this.range, this.getPosY() - this.range,
                     this.range*2.0, this.range*2.0);
+			List<GameEntity> enemyList = new ArrayList<GameEntity>();
+			for(GameEntity entity: entities){
+				if(entity instanceof AbstractEnemy) enemyList.add(entity);
+			}
 			long bulletCount = this.numTarget;
-			if(entities.size() < bulletCount) bulletCount = entities.size();
-            for(GameEntity entity: entities){
-            	if(bulletCount == 0){
-            		this.tickDown = speed;
-                    return null;
-				}
-				if(entity instanceof AbstractEnemy){
-				    AbstractBullet bullet = this.doSpawn(field.getTickCount(),this, (AbstractEnemy) entity);
-				    field.doSpawn(bullet);
-				    bulletCount--;
+			if(enemyList.size() < bulletCount) bulletCount = enemyList.size();
+            for(GameEntity entity: enemyList){
+            	AbstractBullet bullet = this.doSpawn(field.getTickCount(),this, (AbstractEnemy) entity);
+            	field.doSpawn(bullet);
+            	bulletCount--;
+				if(bulletCount == 0) {
+					this.tickDown = speed;
+					return null;
 				}
 			}
+//			this.tickDown = speed;
+
 		}
         return null;
     }

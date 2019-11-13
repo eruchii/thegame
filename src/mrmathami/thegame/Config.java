@@ -56,7 +56,7 @@ public final class Config {
 	public static final long NORMAL_BULLET_COUNT = 1;
 
 	public static final long MACHINE_GUN_BULLET_TTL = 15;
-	public static final long MACHINE_GUN_BULLET_STRENGTH = 30;
+	public static final long MACHINE_GUN_BULLET_STRENGTH = 50;
 	public static final double MACHINE_GUN_BULLET_SPEED = 0.55;
 	public static final long MACHINE_GUN_BULLET_COUNT = 5;
 
@@ -67,15 +67,15 @@ public final class Config {
 	//endregion
 
 	//region Tower
-	public static final long NORMAL_TOWER_SPEED = 30;
+	public static final long NORMAL_TOWER_SPEED = 60;
 	public static final double NORMAL_TOWER_RANGE = 5.0;
 	public static final long NORMAL_TOWER_COST = 10;
 
-	public static final long MACHINE_GUN_TOWER_SPEED = 10;
+	public static final long MACHINE_GUN_TOWER_SPEED = 15;
 	public static final double MACHINE_GUN_TOWER_RANGE = 4.0;
 	public static final long MACHINE_GUN_TOWER_COST = 20;
 
-	public static final long SNIPER_TOWER_SPEED = 60;
+	public static final long SNIPER_TOWER_SPEED = 80;
 	public static final double SNIPER_TOWER_RANGE = 8.0;
 	public static final long SNIPER_GUN_TOWER_COST = 30;
 	//endregion
@@ -87,10 +87,10 @@ public final class Config {
 	public static final double NORMAL_ENEMY_SPEED = 0.2;
 	public static final long NORMAL_ENEMY_REWARD = 1;
 
-	public static final double SMALLER_ENEMY_SIZE = 1.8;
+	public static final double SMALLER_ENEMY_SIZE = 2;
 	public static final long SMALLER_ENEMY_HEALTH = 500;
 	public static final long SMALLER_ENEMY_ARMOR = 0;
-	public static final double SMALLER_ENEMY_SPEED = 0.3;
+	public static final double SMALLER_ENEMY_SPEED = 0.25;
 	public static final long SMALLER_ENEMY_REWARD = 2;
 
 	public static final double TANKER_ENEMY_SIZE = 2;
@@ -105,6 +105,22 @@ public final class Config {
 	public static final double BOSS_ENEMY_SPEED = 0.3;
 	public static final long BOSS_ENEMY_REWARD = 10;
 	//endregion
+
+	public static final long NORMAL_SPAWNER_INTERVAL = 15;
+	public static final long NORMAL_SPAWNER_DELAY = 0;
+	public static final long NORMAL_SPAWNER_NUM = 3;
+
+	public static final long SMALLER_SPAWNER_INTERVAL = 15;
+	public static final long SMALLER_SPAWNER_DELAY = 0;
+	public static final long SMALLER_SPAWNER_NUM = 3;
+
+	public static final long TANKER_SPAWNER_INTERVAL = 30;
+	public static final long TANKER_SPAWNER_DELAY = 0;
+	public static final long TANKER_SPAWNER_NUM = 1;
+
+	public static final long BOSS_SPAWNER_INTERVAL = 100;
+	public static final long BOSS_SPAWNER_DELAY = 0;
+	public static final long BOSS_SPAWNER_NUM = 1;
 
 	public static final String HOST = "127.0.0.1";
 	public static final int PORT = 80;

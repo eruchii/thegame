@@ -72,7 +72,7 @@ public abstract class AbstractEnemy extends AbstractEntity implements UpdatableE
 		double minimumDistance = Double.MAX_VALUE;
 		double newPosX = enemyPosX;
 		double newPosY = enemyPosY;
-		for (double realSpeed = currentSpeed * 0.125; realSpeed <= currentSpeed; realSpeed += realSpeed) {
+		for (double realSpeed = currentSpeed * 0.03125; realSpeed <= currentSpeed; realSpeed += realSpeed) {
 			for (double[] deltaDirection : DELTA_DIRECTION_ARRAY) {
 
 				final double currentPosX = enemyPosX + deltaDirection[0] * realSpeed;
