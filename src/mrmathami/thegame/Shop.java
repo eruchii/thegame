@@ -22,6 +22,10 @@ public class Shop {
     private double buttonWidth = 200;
     private double buttonHeigth = 95;
 
+    private double normalTowerButtonPosX = 150;
+    private double sniperTowerButtonPosX = 400;
+    private double machineGunTowerButtonPosX = 650;
+
     public Shop(@Nonnull GameField field){
         this.field = field;
 
@@ -43,17 +47,31 @@ public class Shop {
         ImageView sniperTower = new ImageView(image);
 
         // Init Button
-        NormalTowerButton normalTowerButton = new NormalTowerButton(normalTower,100,Config.SCREEN_HEIGHT-buttonHeigth,buttonWidth,buttonHeigth,"Normal Tower");
-        SniperTowerButton sniperTowerButton = new SniperTowerButton(sniperTower,400,Config.SCREEN_HEIGHT-buttonHeigth,buttonWidth,buttonHeigth,"Sniper Tower");
-        MachineGunTowerButton machineGunTowerButton = new MachineGunTowerButton(machineGunTower,700,Config.SCREEN_HEIGHT-buttonHeigth,buttonWidth,buttonHeigth,"Machine Gun Tower");
-
-        //Save and Load Button
 
 
-        // Set Button Pressed
+
+
+
+        /**
+         *  Normal Tower area
+         */
+        NormalTowerButton normalTowerButton = new NormalTowerButton(normalTower,normalTowerButtonPosX,Config.SCREEN_HEIGHT-buttonHeigth,buttonWidth,buttonHeigth,"Normal Tower",gameController);
         normalTowerButton.getButton().setOnMousePressed(gameController::NormalTowerClicked);
+        normalTowerButton.getButton().setOnMouseEntered(gameController::NormalTowerHover);
+        /**
+         *  Sniper Tower area
+         */
+        SniperTowerButton sniperTowerButton = new SniperTowerButton(sniperTower,sniperTowerButtonPosX,Config.SCREEN_HEIGHT-buttonHeigth,buttonWidth,buttonHeigth,"Sniper Tower",gameController);
         sniperTowerButton.getButton().setOnMousePressed(gameController::SniperTowerClicked);
+        sniperTowerButton.getButton().setOnMouseEntered(gameController::SniperTowerHover);
+        /**
+         *  Machine Gun Tower area
+         */
+        MachineGunTowerButton machineGunTowerButton = new MachineGunTowerButton(machineGunTower,machineGunTowerButtonPosX,Config.SCREEN_HEIGHT-buttonHeigth,buttonWidth,buttonHeigth,"Machine Gun Tower",gameController);
         machineGunTowerButton.getButton().setOnMousePressed(gameController::MachineGunTowerClicked);
+        machineGunTowerButton.getButton().setOnMouseEntered(gameController::MachineGunTowerHover);
+        // Set action on Mouse Hover :
+
 
         // Adding the Button
         pane.getChildren().addAll(normalTowerButton.getButton(), machineGunTowerButton.getButton(), sniperTowerButton.getButton());

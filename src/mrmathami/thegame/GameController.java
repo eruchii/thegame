@@ -3,12 +3,15 @@ package mrmathami.thegame;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontSmoothingType;
 import javafx.stage.WindowEvent;
 import mrmathami.thegame.drawer.GameDrawer;
 import mrmathami.thegame.entity.GameEntity;
@@ -31,6 +34,9 @@ public final class GameController extends AnimationTimer {
 	private int currentEntityToAdd = 0;
 	private Shop shop;
 	private double mouseMovePosX, mouseMovePosY;
+	private double gameOverScreenPosX, getGameOverScreenPosY;
+	private int mouseHover = 0;
+	private int mouseExited;
 	/**
 	 * Advance stuff. Just don't touch me. Google me if you are curious.
 	 */
@@ -82,7 +88,8 @@ public final class GameController extends AnimationTimer {
 		// Just a few acronyms.
 		final long width = Config.TILE_HORIZONTAL;
 		final long height = Config.TILE_VERTICAL;
-
+		this.graphicsContext.setFont(new Font(15));
+		this.graphicsContext.setFontSmoothingType(FontSmoothingType.LCD);
 		// The game field. Please consider create another way to load a game field.
 		// TODO: I don't have much time, so, spawn some wall then :)
 		this.field = new GameField(GameStage.load("/stage/demo.txt"));
@@ -126,8 +133,7 @@ public final class GameController extends AnimationTimer {
 //		if (currentTick != tick) return;
 
 		// draw a new frame, as fast as possible.
-		drawer.render();
-
+		
 		// MSPT display. MSPT stand for Milliseconds Per Tick.
 		// It means how many ms your game spend to update and then draw the game once.
 		// Draw it out mostly for debug
@@ -135,6 +141,7 @@ public final class GameController extends AnimationTimer {
 		graphicsContext.setFill(Color.BLACK);
 		graphicsContext.fillText(String.format("MSPT: %3.2f", mspt), 0, 12);
 
+		// Draw the Tower on the mouse after Button Clicked
 		if (this.currentEntityToAdd == 1){
 			graphicsContext.setFill(Color.WHITE);
 			graphicsContext.fillOval(mouseMovePosX-Config.TILE_SIZE/2, mouseMovePosY-Config.TILE_SIZE/2, Config.TILE_SIZE, Config.TILE_SIZE);
@@ -149,8 +156,27 @@ public final class GameController extends AnimationTimer {
 
 		}
 
+		// Draw the information about the tower when hover on the button
+		if (mouseHover == 1)
+		{
+			graphicsContext.setFill(Color.WHITE);
+			graphicsContext.fillText("Cost : " + Config.NORMAL_TOWER_COST + "\nRange : " + Config.NORMAL_TOWER_RANGE + "\nDamage : "
+					+ Config.NORMAL_BULLET_STRENGTH + "\nSpeed : Normal" , 150, Config.SCREEN_HEIGHT - 165);
+		}
+		else if (mouseHover == 2){
+			graphicsContext.setFill(Color.WHITE);
+			graphicsContext.fillText("Cost : " + Config.MACHINE_GUN_TOWER_COST + "\nRange : " + Config.MACHINE_GUN_TOWER_RANGE + "\nDamage : "
+					+ Config.MACHINE_GUN_BULLET_STRENGTH + "\nSpeed : Fast" , 650, Config.SCREEN_HEIGHT - 165);
+		}
+		else if (mouseHover == 3){
+			graphicsContext.setFill(Color.WHITE);
+			graphicsContext.fillText("Cost : " + Config.SNIPER_GUN_TOWER_COST + "\nRange : " + Config.SNIPER_TOWER_RANGE + "\nDamage : "
+					+ Config.SNIPER_BULLET_STRENGTH + "\nSpeed : Slow" , 400, Config.SCREEN_HEIGHT - 165);
+		}
 		if(field.GameOver()){
-			graphicsContext.fillText("Game Over",50,50);
+			String path = String.valueOf(this.getClass().getResource("/game_over.png"));
+			Image content = new Image(path, 500, 500, false, false);
+			graphicsContext.drawImage(content, Config.SCREEN_HEIGHT/2-150, Config.SCREEN_HEIGHT/8-100);
 		}
 
 		// if we have time to spend, do a spin
@@ -181,9 +207,7 @@ public final class GameController extends AnimationTimer {
 		Platform.exit();
 		System.exit(0);
 	}
-    final void GameOver(){
 
-    }
 	/**
 	 * Key down handler.
 	 *
@@ -292,5 +316,26 @@ public final class GameController extends AnimationTimer {
 	public void mouseMoveHandler(MouseEvent mouseEvent) {
 		mouseMovePosY = mouseEvent.getSceneY();
 		mouseMovePosX = mouseEvent.getSceneX();
+	}
+
+	public void NormalTowerHover(MouseEvent mouseEvent) {
+		mouseHover = 1;
+	}
+
+	public void NormalTowerExited(MouseEvent mouseEvent) {
+		mouseHover = 0;
+		System.out.println("hi");
+	}
+
+	public void SniperTowerHover(MouseEvent mouseEvent) {
+		mouseHover = 3;
+	}
+
+	public void MachineGunTowerHover(MouseEvent mouseEvent) {
+		mouseHover = 2;
+	}
+
+	public void setMouseHover() {
+		mouseHover = 0;
 	}
 }
