@@ -99,6 +99,7 @@ public abstract class AbstractEnemy extends AbstractEntity implements UpdatableE
 		{
 			livingEntity.doEffect(-1);
 			this.doDestroy();
+			field.getReward(-reward);
 		}
 		return false;
 	}

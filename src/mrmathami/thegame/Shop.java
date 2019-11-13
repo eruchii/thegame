@@ -28,6 +28,7 @@ public class Shop {
     }
 
     public final void buyTower(AbstractTower tower){
+        if(field.getTarget().isDestroyed()) return;
         if(field.getMoney() - tower.getCost() < 0) return;
         field.getReward(-tower.getCost());
         field.addEntities(tower);

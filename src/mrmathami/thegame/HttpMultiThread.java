@@ -65,7 +65,9 @@ public class HttpMultiThread implements Runnable{
     }
 
     public final void saveToCloud(){
-        ArrayList<String> file = field.createSaveFile();
+        field.pauseGame();
+        List<String> file = field.createSaveFile();
+        field.unpauseGame();
         StringBuilder strSave = new StringBuilder();
         strSave.append(String.format("%d\n", file.size()));
         for(String s: file) strSave.append(s);
@@ -100,7 +102,9 @@ public class HttpMultiThread implements Runnable{
             String data = (String)jo.get("data");
             byte[] dataDecoded = Base64.getDecoder().decode(data);
             InputStream stream = new ByteArrayInputStream(dataDecoded);
+            field.pauseGame();
             field.load(stream);
+            field.unpauseGame();
 
         } catch (URISyntaxException | IOException | ParseException e){
             e.printStackTrace();

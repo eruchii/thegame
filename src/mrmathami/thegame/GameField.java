@@ -52,6 +52,8 @@ public final class GameField {
      */
 	private long money = 5000;
 
+	private boolean pause = false;
+
 	public GameField(@Nonnull GameStage gameStage) {
 		this.width = gameStage.getWidth();
 		this.height = gameStage.getHeight();
@@ -85,6 +87,9 @@ public final class GameField {
     public long getMoney(){
         return money;
     }
+
+    public void pauseGame() {this.pause = true;}
+    public void unpauseGame(){ this.pause = false;}
 	/**
 	 * @return entities on the field. Read-only list.
 	 */
@@ -115,12 +120,11 @@ public final class GameField {
 	 * 3. Spawn Entity: Add entities that are marked to be spawned.
 	 */
 	public final void tick() {
-		this.tickCount += 1;
-
-		//1.0 Check if the game is over
-		if (Target.isDestroyed()){
+		if (Target.isDestroyed() || this.pause){
 			return;
 		}
+		this.tickCount += 1;
+		//1.0 Check if the game is over
 		// 1.1. Update UpdatableEntity && Check for the HP of the Target
 		for (final GameEntity entity : entities) {
 			if (entity instanceof UpdatableEntity) ((UpdatableEntity) entity).onUpdate(this);
@@ -171,23 +175,22 @@ public final class GameField {
     /**
      *  Save game field
      */
-    public final ArrayList<String> createSaveFile(){
-		ArrayList<String> file = new ArrayList<>();
+    public final List<String> createSaveFile(){
+		List<String> file = new ArrayList<>();
 		file.add(String.format("%s %d\n","Money", this.money));
 		file.add(String.format("%s %d\n","Tick", this.getTickCount()));
 		file.add(String.format("%s %f %f %f %f %d\n",
 				"TargetHP", this.Target.getPosX(), this.Target.getPosY(), this.Target.getWidth(),
-				this.Target.getHeight(), this.Target.getHealth()));
+				this.Target.getHeight(), this.Target.getHealth())
+		);
 		for (GameEntity entity : entities) {
+			String[] classname = entity.getClass().toString().split("class ")[1].split("[. ]+");
+			String entityName = classname[classname.length - 1];
 			if(entity instanceof AbstractTower || entity instanceof AbstractEnemy) {
-				String[] classname = entity.getClass().toString().split("class ")[1].split("[. ]+");
-				String entityName = classname[classname.length - 1];
 				file.add(String.format("%s %d %f %f\n", entityName, entity.getCreatedTick(),
 						entity.getPosX(), entity.getPosY())
 				);
 			} else if(entity instanceof AbstractSpawner){
-				String[] classname = entity.getClass().toString().split("class ")[1].split("[. ]+");
-				String entityName = classname[classname.length - 1];
 				file.add(String.format("%s %d %f %f %f %f %d %d %d\n",
 						entityName, entity.getCreatedTick(), entity.getPosX(), entity.getPosY(), entity.getWidth(), entity.getHeight(),
 						((AbstractSpawner) entity).getSpawnInterval(), ((AbstractSpawner) entity).getInitialDelay(),
@@ -207,7 +210,7 @@ public final class GameField {
 		System.out.println(filename);
 		try(final PrintWriter writer = new PrintWriter(filename, "UTF-8")) {
 			if (writer == null) throw new IOException("Resource not found!");
-			ArrayList<String> file = createSaveFile();
+			List<String> file = createSaveFile();
 			writer.println(file.size());
 			for(String s: file){
 				writer.write(s);
@@ -232,6 +235,7 @@ public final class GameField {
 		for(GameEntity entity: entities){
 			if(entity instanceof AbstractTower || entity instanceof AbstractEnemy || entity instanceof AbstractBullet
 					|| entity instanceof AbstractSpawner || entity instanceof Target){
+				if(entity instanceof Target) System.out.println(Target.getHealth());
 				destroyedEntities.add(entity);
 			}
 		}
@@ -250,7 +254,9 @@ public final class GameField {
 				double w = scanner.nextDouble();
 				double h = scanner.nextDouble();
 				int health = scanner.nextInt();
-				this.updateTarget(new Target(0, (long)x, (long)y, (long)w, (long)h, health));
+				Target new_target = new Target(0, (long)x, (long)y, (long)w, (long)h, health);
+				entities.add(new_target);
+				this.Target = new_target;
 			} else if("Tick".equals(type)){
 				int tick = scanner.nextInt();
 				this.tickCount = tick+1;
