@@ -133,7 +133,7 @@ public final class GameController extends AnimationTimer {
 //		if (currentTick != tick) return;
 
 		// draw a new frame, as fast as possible.
-		
+		drawer.render();
 		// MSPT display. MSPT stand for Milliseconds Per Tick.
 		// It means how many ms your game spend to update and then draw the game once.
 		// Draw it out mostly for debug
