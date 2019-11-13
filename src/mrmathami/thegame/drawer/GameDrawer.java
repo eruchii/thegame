@@ -188,9 +188,11 @@ public final class GameDrawer {
 
 // 		display HP and Money
 		graphicsContext.setFill(Color.WHITE);
-		graphicsContext.fillText(String.format("HP: %d", gameField.getTarget().getHealth()), 0, Config.SCREEN_HEIGHT - 30.);
+		graphicsContext.fillText(String.format("Wave: %d", gameField.getWaveCount())+1, 0, Config.SCREEN_HEIGHT - 20);
+		graphicsContext.setFill(Color.WHITE);
+		graphicsContext.fillText(String.format("HP: %d", gameField.getTarget().getHealth()), 0, Config.SCREEN_HEIGHT - 40);
         graphicsContext.setFill(Color.WHITE);
-        graphicsContext.fillText(String.format("Money: %d", gameField.getMoney()), 0, Config.SCREEN_HEIGHT - 50);
+        graphicsContext.fillText(String.format("Money: %d", gameField.getMoney()), 0, Config.SCREEN_HEIGHT - 60);
 	}
 	public void drawNewEntities(GameEntity entity) {
 		final EntityDrawer drawer = getEntityDrawer(entity);

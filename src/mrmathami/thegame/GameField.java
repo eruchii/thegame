@@ -92,6 +92,14 @@ public final class GameField {
         return money;
     }
 
+    public int getCurrentWave(){
+		return this.currentWave;
+	}
+
+	public int getWaveCount(){
+		return this.waveCount;
+	}
+
     public void pauseGame() {this.pause = true;}
     public void unpauseGame(){ this.pause = false;}
 	/**

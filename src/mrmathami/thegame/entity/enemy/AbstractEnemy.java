@@ -25,6 +25,7 @@ public abstract class AbstractEnemy extends AbstractEntity implements UpdatableE
 	private int LT = 0;
 	private double directionX = 1.0;
 	private double directionY = 0.0;
+	private boolean upgraded = false;
 
 	protected AbstractEnemy(long createdTick, double posX, double posY, double size, long health, long armor, double speed, long reward) {
 		super(createdTick, posX, posY, size, size);
@@ -55,6 +56,11 @@ public abstract class AbstractEnemy extends AbstractEntity implements UpdatableE
 
 	@Override
 	public final UpdatableEntity onUpdate(@Nonnull GameField field) {
+		if(!upgraded && this.maxHealth != this.health){
+			this.maxHealth = (long)(maxHealth*Math.pow(1.1, field.getWaveCount()));
+			this.health = this.maxHealth;
+			upgraded = true;
+		}
 		final double enemyPosX = getPosX();
 		final double enemyPosY = getPosY();
 		final double enemyWidth = getWidth();
