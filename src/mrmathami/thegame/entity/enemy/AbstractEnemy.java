@@ -22,6 +22,9 @@ public abstract class AbstractEnemy extends AbstractEntity implements UpdatableE
 	private long slowTime = 0;
 	private double slowEff = 0;
 	private long maxHealth;
+	private int LT = 0;
+	private double directionX = 1.0;
+	private double directionY = 0.0;
 
 	protected AbstractEnemy(long createdTick, double posX, double posY, double size, long health, long armor, double speed, long reward) {
 		super(createdTick, posX, posY, size, size);
@@ -56,6 +59,7 @@ public abstract class AbstractEnemy extends AbstractEntity implements UpdatableE
 		final double enemyPosY = getPosY();
 		final double enemyWidth = getWidth();
 		final double enemyHeight = getHeight();
+		this.LT++;
 		double currentSpeed = this.speed;
 
 		if(this.slowTime > 0){
@@ -78,6 +82,8 @@ public abstract class AbstractEnemy extends AbstractEntity implements UpdatableE
 					minimumDistance = currentDistance;
 					newPosX = currentPosX;
 					newPosY = currentPosY;
+					directionX = deltaDirection[0];
+					directionY = deltaDirection[1];
 				}
 			}
 		}
@@ -110,6 +116,10 @@ public abstract class AbstractEnemy extends AbstractEntity implements UpdatableE
 	}
 
 	public final long getMaxHealth(){ return maxHealth;}
+
+	public int getLT() {return this.LT;}
+	public double getDirectionX() {return this.directionX;}
+	public double getDirectionY() {return this.directionY;}
 
 	@Override
 	public final void doEffect(long value) {

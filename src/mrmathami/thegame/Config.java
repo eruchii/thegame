@@ -81,10 +81,10 @@ public final class Config {
 	//endregion
 
 	//region Enemy
-	public static final double NORMAL_ENEMY_SIZE = 0.9;
+	public static final double NORMAL_ENEMY_SIZE = 1.5;
 	public static final long NORMAL_ENEMY_HEALTH = 1000;
 	public static final long NORMAL_ENEMY_ARMOR = 3;
-	public static final double NORMAL_ENEMY_SPEED = 0.3;
+	public static final double NORMAL_ENEMY_SPEED = 0.2;
 	public static final long NORMAL_ENEMY_REWARD = 1;
 
 	public static final double SMALLER_ENEMY_SIZE = 0.7;
@@ -106,7 +106,7 @@ public final class Config {
 	public static final long BOSS_ENEMY_REWARD = 10;
 	//endregion
 
-	public static final String HOST = "192.168.43.190";
+	public static final String HOST = "127.0.0.1";
 	public static final int PORT = 80;
 	public static final String PROTOCOL = "http";
 
