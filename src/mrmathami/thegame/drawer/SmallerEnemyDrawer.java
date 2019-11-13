@@ -7,25 +7,23 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import mrmathami.thegame.Config;
 import mrmathami.thegame.entity.GameEntity;
-import mrmathami.thegame.entity.LivingEntity;
 import mrmathami.thegame.entity.enemy.AbstractEnemy;
-import mrmathami.thegame.entity.enemy.SmallerEnemy;
 
 import javax.annotation.Nonnull;
-import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public final class SmallerEnemyDrawer implements EntityDrawer {
 	@Override
 	public void draw(long tickCount,
-					 @Nonnull GraphicsContext graphicsContext,
-					 @Nonnull GameEntity entity,
-					 double screenPosX,
-					 double screenPosY,
-					 double screenWidth,
-					 double screenHeight,
-					 double zoom) {
+                     @Nonnull GraphicsContext graphicsContext,
+                     @Nonnull GameEntity entity,
+                     double screenPosX,
+                     double screenPosY,
+                     double screenWidth,
+                     double screenHeight,
+                     double zoom, HashMap<String, Image> cacheImg) {
 		double percent = 1.0 * ((AbstractEnemy) entity).getHealth() / ((AbstractEnemy) entity).getMaxHealth();
 
 
@@ -44,6 +42,10 @@ public final class SmallerEnemyDrawer implements EntityDrawer {
 		animated.add("/PNG/Succubus/1.png");
 		animated.add("/PNG/Succubus/1.png");
 		animated.add("/PNG/Succubus/1.png");
+		animated.add("/PNG/Succubus/1.png");
+		animated.add("/PNG/Succubus/1.png");
+		animated.add("/PNG/Succubus/2.png");
+		animated.add("/PNG/Succubus/2.png");
 		animated.add("/PNG/Succubus/2.png");
 		animated.add("/PNG/Succubus/2.png");
 		animated.add("/PNG/Succubus/2.png");
@@ -56,6 +58,10 @@ public final class SmallerEnemyDrawer implements EntityDrawer {
 		animated.add("/PNG/Succubus/3.png");
 		animated.add("/PNG/Succubus/3.png");
 		animated.add("/PNG/Succubus/3.png");
+		animated.add("/PNG/Succubus/3.png");
+		animated.add("/PNG/Succubus/3.png");
+		animated.add("/PNG/Succubus/4.png");
+		animated.add("/PNG/Succubus/4.png");
 		animated.add("/PNG/Succubus/4.png");
 		animated.add("/PNG/Succubus/4.png");
 		animated.add("/PNG/Succubus/4.png");
@@ -75,7 +81,13 @@ public final class SmallerEnemyDrawer implements EntityDrawer {
 		double directionY = ((AbstractEnemy) entity).getDirectionY();
 		double SQRT_2 = Math.sqrt(2.0) / 2.0;
 
-		ImageView iv = new ImageView(new Image(path, newW, newH, true, true));
+		Image tmp = cacheImg.get(url);
+		if(tmp == null) {
+			tmp = new Image(path, newW, newH, false, true);
+			cacheImg.put(url, tmp);
+		}
+		ImageView iv = new ImageView(tmp);
+
 		if((directionX == 1.0 && directionY == 0.0) ||
 				(directionX == SQRT_2 && directionY == SQRT_2)) iv.setRotate(0);
 		else if((directionX == -1.0 && directionY == 0.0) ||

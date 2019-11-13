@@ -1,9 +1,8 @@
 package mrmathami.thegame.drawer;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontSmoothingType;
 import mrmathami.thegame.Config;
 import mrmathami.thegame.GameEntities;
 import mrmathami.thegame.GameField;
@@ -87,6 +86,7 @@ public final class GameDrawer {
 	private transient double fieldStartPosX = Float.NaN;
 	private transient double fieldStartPosY = Float.NaN;
 	private transient double fieldZoom = Float.NaN;
+	public HashMap<String, Image> cacheImg = new HashMap<>();
 
 	public GameDrawer(@Nonnull GraphicsContext graphicsContext, @Nonnull GameField gameField) {
 		this.graphicsContext = graphicsContext;
@@ -181,14 +181,14 @@ public final class GameDrawer {
 							(entity.getPosY() - fieldStartPosY) * fieldZoom,
 							entity.getWidth() * fieldZoom,
 							entity.getHeight() * fieldZoom,
-							fieldZoom
+							fieldZoom, cacheImg
 					);
 			}
 		}
 
 // 		display HP and Money
 		graphicsContext.setFill(Color.WHITE);
-		graphicsContext.fillText(String.format("Wave: %d", gameField.getWaveCount())+1, 0, Config.SCREEN_HEIGHT - 20);
+		graphicsContext.fillText(String.format("Wave: %d", gameField.getWaveCount()+1), 0, Config.SCREEN_HEIGHT - 20);
 		graphicsContext.setFill(Color.WHITE);
 		graphicsContext.fillText(String.format("HP: %d", gameField.getTarget().getHealth()), 0, Config.SCREEN_HEIGHT - 40);
         graphicsContext.setFill(Color.WHITE);
@@ -202,8 +202,8 @@ public final class GameDrawer {
 					(entity.getPosY() - fieldStartPosY) * fieldZoom,
 					entity.getWidth() * fieldZoom,
 					entity.getHeight() * fieldZoom,
-					fieldZoom
-			);
+					fieldZoom,
+					null);
 		}
 		System.out.println(drawer);
 		System.out.println(entity.getClass());
