@@ -146,6 +146,7 @@ public final class GameController extends AnimationTimer {
 		else if (this.currentEntityToAdd == 3){
 			graphicsContext.setFill(Color.MEDIUMVIOLETRED);
 			graphicsContext.fillOval(mouseMovePosX-Config.TILE_SIZE/2, mouseMovePosY-Config.TILE_SIZE/2, Config.TILE_SIZE, Config.TILE_SIZE);
+
 		}
 
 		if(field.GameOver()){
@@ -227,19 +228,19 @@ public final class GameController extends AnimationTimer {
 	 */
 	public void NormalTowerClicked(MouseEvent mouseEvent){
 		this.currentEntityToAdd = 1;
-		mouseMovePosY = mouseEvent.getY();
-		mouseMovePosX = mouseEvent.getX();
+		mouseMovePosY = mouseEvent.getSceneY();
+		mouseMovePosX = mouseEvent.getSceneX();
 	}
 
 	public void MachineGunTowerClicked(MouseEvent mouseEvent){
 		this.currentEntityToAdd = 2;
-		mouseMovePosY = mouseEvent.getY();
-		mouseMovePosX = mouseEvent.getX();
+		mouseMovePosY = mouseEvent.getSceneY();
+		mouseMovePosX = mouseEvent.getSceneX();
 	}
 	public void SniperTowerClicked(MouseEvent mouseEvent){
 		this.currentEntityToAdd = 3;
-		mouseMovePosY = mouseEvent.getY();
-		mouseMovePosX = mouseEvent.getX();
+		mouseMovePosY = mouseEvent.getSceneY();
+		mouseMovePosX = mouseEvent.getSceneX();
 	}
 
 	public void SaveButtonClicked(MouseEvent mouseEvent){
@@ -278,7 +279,7 @@ public final class GameController extends AnimationTimer {
 		if (check && currentEntityToAdd!=0){
 		    // Add And Spawn Specify Tower
 			if (this.currentEntityToAdd == 1)
-                shop.buyTower(new NormalTower(field.getTickCount(), posX, posY));
+				shop.buyTower(new NormalTower(field.getTickCount(), posX, posY));
 			else if (this.currentEntityToAdd == 2)
 				shop.buyTower(new MachineGunTower(field.getTickCount(), posX, posY));
 			else if (this.currentEntityToAdd == 3)
@@ -289,7 +290,7 @@ public final class GameController extends AnimationTimer {
 	}
 
 	public void mouseMoveHandler(MouseEvent mouseEvent) {
-		mouseMovePosX = mouseEvent.getX();
-		mouseMovePosY = mouseEvent.getY();
+		mouseMovePosY = mouseEvent.getSceneY();
+		mouseMovePosX = mouseEvent.getSceneX();
 	}
 }
