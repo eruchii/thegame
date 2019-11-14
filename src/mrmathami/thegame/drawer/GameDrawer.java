@@ -203,7 +203,7 @@ public final class GameDrawer {
 					entity.getWidth() * fieldZoom,
 					entity.getHeight() * fieldZoom,
 					fieldZoom,
-					null);
+					cacheImg);
 		}
 		System.out.println(drawer);
 		System.out.println(entity.getClass());

@@ -26,6 +26,7 @@ public abstract class AbstractEnemy extends AbstractEntity implements UpdatableE
 	private double directionX = 1.0;
 	private double directionY = 0.0;
 	private boolean upgraded = false;
+	private int waveCount = 0;
 
 	protected AbstractEnemy(long createdTick, double posX, double posY, double size, long health, long armor, double speed, long reward) {
 		super(createdTick, posX, posY, size, size);
@@ -61,6 +62,7 @@ public abstract class AbstractEnemy extends AbstractEntity implements UpdatableE
 			this.health = this.maxHealth;
 			upgraded = true;
 		}
+		this.waveCount = field.getWaveCount();
 		final double enemyPosX = getPosX();
 		final double enemyPosY = getPosY();
 		final double enemyWidth = getWidth();
@@ -126,6 +128,7 @@ public abstract class AbstractEnemy extends AbstractEntity implements UpdatableE
 	public int getLT() {return this.LT;}
 	public double getDirectionX() {return this.directionX;}
 	public double getDirectionY() {return this.directionY;}
+	public int getWaveCount(){return this.waveCount;}
 
 	@Override
 	public final void doEffect(long value) {

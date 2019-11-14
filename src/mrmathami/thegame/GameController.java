@@ -174,9 +174,9 @@ public final class GameController extends AnimationTimer {
 					+ Config.SNIPER_BULLET_STRENGTH + "\nSpeed : Slow" , 400, Config.SCREEN_HEIGHT - 165);
 		}
 		if(field.GameOver()){
-			String path = String.valueOf(this.getClass().getResource("/game_over.png"));
-			Image content = new Image(path, 500, 500, false, false);
-			graphicsContext.drawImage(content, Config.SCREEN_HEIGHT/2-150, Config.SCREEN_HEIGHT/8-100);
+			String path = String.valueOf(this.getClass().getResource("/PNG/game_over.png"));
+			Image content = new Image(path, 500, 500, false, true);
+			graphicsContext.drawImage(content, Config.SCREEN_WIDTH/2-250, Config.SCREEN_HEIGHT/2-250);
 		}
 
 		// if we have time to spend, do a spin
