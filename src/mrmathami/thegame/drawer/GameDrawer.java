@@ -1,8 +1,12 @@
 package mrmathami.thegame.drawer;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.FocusModel;
+import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import mrmathami.thegame.Config;
 import mrmathami.thegame.GameEntities;
 import mrmathami.thegame.GameField;
@@ -203,11 +207,35 @@ public final class GameDrawer {
 					entity.getWidth() * fieldZoom,
 					entity.getHeight() * fieldZoom,
 					fieldZoom,
-					null);
+					cacheImg);
 		}
 		System.out.println(drawer);
 		System.out.println(entity.getClass());
 	}
+	/*
+	Mouse Hover Drawer
+	 */
+	public void NormalTowerHover(){
+        graphicsContext.setFill(Color.WHITE);
+        graphicsContext.fillText("Cost : " + Config.NORMAL_TOWER_COST + "\nRange : " + Config.NORMAL_TOWER_RANGE + "\nDamage : "
+                + Config.NORMAL_BULLET_STRENGTH + "\nSpeed : Normal" , 150, Config.SCREEN_HEIGHT - 165);
+    }
+
+    public  void MachineGunTowerHover(){
+        graphicsContext.setFill(Color.WHITE);
+        graphicsContext.fillText("Cost : " + Config.MACHINE_GUN_TOWER_COST + "\nRange : " + Config.MACHINE_GUN_TOWER_RANGE + "\nDamage : "
+                + Config.MACHINE_GUN_BULLET_STRENGTH + "\nSpeed : Fast" , 650, Config.SCREEN_HEIGHT - 165);
+    }
+
+    public void SniperGunTowerHover(){
+        graphicsContext.setFill(Color.WHITE);
+        graphicsContext.fillText("Cost : " + Config.SNIPER_GUN_TOWER_COST + "\nRange : " + Config.SNIPER_TOWER_RANGE + "\nDamage : "
+                + Config.SNIPER_BULLET_STRENGTH + "\nSpeed : Slow" , 400, Config.SCREEN_HEIGHT - 165);
+    }
+
+    /*
+    Game Over Screen
+     */
 	public final double screenToFieldPosX(double screenPosX) {
 		return screenPosX * fieldZoom + fieldStartPosX;
 	}

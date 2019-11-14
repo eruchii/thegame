@@ -17,13 +17,13 @@ public final class MountainDrawer implements EntityDrawer {
 //		graphicsContext.setFill(Color.DARKGREEN);
 //		graphicsContext.fillRect(screenPosX, screenPosY, screenWidth, screenHeight);
 //		// Draw the Road
-		Image content = cacheImg.get("/BrickTile.png");
+		Image content = cacheImg.get("/PNG/BrickTile.png");
 		if(content == null) {
-			String path = String.valueOf(this.getClass().getResource("/BrickTile.png"));
+			String path = String.valueOf(this.getClass().getResource("/PNG/BrickTile.png"));
 			double newW = Config.TILE_SIZE;
 			double newH = Config.TILE_SIZE;
 			content = new Image(path, newW, newH, false, true);
-			cacheImg.put("/BrickTile.png", content);
+			cacheImg.put("/PNG/BrickTile.png", content);
 		}
 		graphicsContext.drawImage(content, screenPosX, screenPosY);
 	}

@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Main-Class: mrmathami.thegame.Main
+Class-Path: json-simple-1.1.1.jar httpclient-4.5.10.jar jsr305-3.0.2.jar
+  commons-codec-1.11.jar javafx-graphics-11.0.2-win.jar javafx-fxml-11.0
+ .2.jar javafx-base-11.0.2-win.jar javafx-controls-11.0.2-win.jar javafx
+ -controls-11.0.2.jar javafx-fxml-11.0.2-win.jar commons-logging-1.2.jar
+  junit-4.10.jar httpcore-4.4.12.jar javafx-base-11.0.2.jar javafx-graph
+ ics-11.0.2.jar
+

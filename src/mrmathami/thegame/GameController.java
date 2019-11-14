@@ -142,15 +142,21 @@ public final class GameController extends AnimationTimer {
 		graphicsContext.fillText(String.format("MSPT: %3.2f", mspt), 0, 12);
 
 		// Draw the Tower on the mouse after Button Clicked
-		if (this.currentEntityToAdd == 1){
-			graphicsContext.setFill(Color.WHITE);
-			graphicsContext.fillOval(mouseMovePosX-Config.TILE_SIZE/2, mouseMovePosY-Config.TILE_SIZE/2, Config.TILE_SIZE, Config.TILE_SIZE);
+		if (this.currentEntityToAdd == 1){ // Normal Tower
+            graphicsContext.strokeOval(mouseMovePosX-Config.TILE_SIZE*Config.NORMAL_TOWER_RANGE/2, mouseMovePosY-Config.TILE_SIZE*Config.NORMAL_TOWER_RANGE/2,
+                    Config.TILE_SIZE*Config.NORMAL_TOWER_RANGE,Config.TILE_SIZE*Config.NORMAL_TOWER_RANGE);
+            graphicsContext.setFill(Color.WHITE);
+            graphicsContext.fillOval(mouseMovePosX-Config.TILE_SIZE/2, mouseMovePosY-Config.TILE_SIZE/2, Config.TILE_SIZE, Config.TILE_SIZE);
 		}
-		else if (this.currentEntityToAdd == 2){
+		else if (this.currentEntityToAdd == 2){ // Machine Gun Tower
+			graphicsContext.strokeOval(mouseMovePosX-Config.TILE_SIZE*Config.MACHINE_GUN_TOWER_RANGE/2, mouseMovePosY-Config.TILE_SIZE*Config.MACHINE_GUN_TOWER_RANGE/2,
+					Config.TILE_SIZE*Config.MACHINE_GUN_TOWER_RANGE,Config.TILE_SIZE*Config.MACHINE_GUN_TOWER_RANGE);
 			graphicsContext.setFill(Color.DARKRED);
 			graphicsContext.fillOval(mouseMovePosX-Config.TILE_SIZE/2, mouseMovePosY-Config.TILE_SIZE/2, Config.TILE_SIZE, Config.TILE_SIZE);
 		}
-		else if (this.currentEntityToAdd == 3){
+		else if (this.currentEntityToAdd == 3){ // Sniper Tower
+			graphicsContext.strokeOval(mouseMovePosX-Config.TILE_SIZE*Config.SNIPER_TOWER_RANGE/2, mouseMovePosY-Config.TILE_SIZE*Config.SNIPER_TOWER_RANGE/2,
+					Config.TILE_SIZE*Config.SNIPER_TOWER_RANGE,Config.TILE_SIZE*Config.SNIPER_TOWER_RANGE);
 			graphicsContext.setFill(Color.MEDIUMVIOLETRED);
 			graphicsContext.fillOval(mouseMovePosX-Config.TILE_SIZE/2, mouseMovePosY-Config.TILE_SIZE/2, Config.TILE_SIZE, Config.TILE_SIZE);
 
@@ -158,25 +164,17 @@ public final class GameController extends AnimationTimer {
 
 		// Draw the information about the tower when hover on the button
 		if (mouseHover == 1)
-		{
-			graphicsContext.setFill(Color.WHITE);
-			graphicsContext.fillText("Cost : " + Config.NORMAL_TOWER_COST + "\nRange : " + Config.NORMAL_TOWER_RANGE + "\nDamage : "
-					+ Config.NORMAL_BULLET_STRENGTH + "\nSpeed : Normal" , 150, Config.SCREEN_HEIGHT - 165);
-		}
+			drawer.NormalTowerHover();
 		else if (mouseHover == 2){
-			graphicsContext.setFill(Color.WHITE);
-			graphicsContext.fillText("Cost : " + Config.MACHINE_GUN_TOWER_COST + "\nRange : " + Config.MACHINE_GUN_TOWER_RANGE + "\nDamage : "
-					+ Config.MACHINE_GUN_BULLET_STRENGTH + "\nSpeed : Fast" , 650, Config.SCREEN_HEIGHT - 165);
+			drawer.MachineGunTowerHover();
 		}
 		else if (mouseHover == 3){
-			graphicsContext.setFill(Color.WHITE);
-			graphicsContext.fillText("Cost : " + Config.SNIPER_GUN_TOWER_COST + "\nRange : " + Config.SNIPER_TOWER_RANGE + "\nDamage : "
-					+ Config.SNIPER_BULLET_STRENGTH + "\nSpeed : Slow" , 400, Config.SCREEN_HEIGHT - 165);
+			drawer.SniperGunTowerHover();
 		}
 		if(field.GameOver()){
-			String path = String.valueOf(this.getClass().getResource("/game_over.png"));
-			Image content = new Image(path, 500, 500, false, false);
-			graphicsContext.drawImage(content, Config.SCREEN_HEIGHT/2-150, Config.SCREEN_HEIGHT/8-100);
+			String path = String.valueOf(this.getClass().getResource("/PNG/game_over.png"));
+			Image content = new Image(path, 500, 500, false, true);
+			graphicsContext.drawImage(content, Config.SCREEN_WIDTH/2-250, Config.SCREEN_HEIGHT/2-250);
 		}
 
 		// if we have time to spend, do a spin
