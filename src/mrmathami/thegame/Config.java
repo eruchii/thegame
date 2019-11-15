@@ -19,7 +19,7 @@ public final class Config {
 	 * 1.0 field unit == TILE_SIZE pixel on the screen.
 	 * Change it base on your texture size.
 	 */
-	public static final long TILE_SIZE = 32;
+	public static final long TILE_SIZE = 35;
 	/**
 	 * Num of tiles the screen can display if fieldZoom is TILE_SIZE,
 	 * in other words, the texture will be display as it without scaling.
@@ -102,7 +102,7 @@ public final class Config {
 	public static final double BOSS_ENEMY_SIZE = 2;
 	public static final long BOSS_ENEMY_HEALTH = 5000;
 	public static final long BOSS_ENEMY_ARMOR = 8;
-	public static final double BOSS_ENEMY_SPEED = 0.3;
+	public static final double BOSS_ENEMY_SPEED = 0.15;
 	public static final long BOSS_ENEMY_REWARD = 10;
 	//endregion
 

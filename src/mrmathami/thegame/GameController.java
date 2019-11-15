@@ -34,7 +34,6 @@ public final class GameController extends AnimationTimer {
 	private int currentEntityToAdd = 0;
 	private Shop shop;
 	private double mouseMovePosX, mouseMovePosY;
-	private double gameOverScreenPosX, getGameOverScreenPosY;
 	private int mouseHover = 0;
 	private int mouseExited;
 	/**
@@ -283,8 +282,8 @@ public final class GameController extends AnimationTimer {
         // Debug Check the class
         // System.out.println(currentEntityToAdd.getClass());
         // Screen coordinate. Remember to convert to field coordinate/
-		long posX = (long) this.drawer.screenToFieldPosX(mouseEvent.getX()/1000);
-		long posY = (long) this.drawer.screenToFieldPosY(mouseEvent.getY()/1000);
+		long posX = (long) mouseEvent.getSceneX() / Config.TILE_SIZE;
+		long posY = (long) mouseEvent.getSceneY() / Config.TILE_SIZE;
 		/*System.out.println(posX);
 		System.out.println(posY);*/
 		boolean check = true;
