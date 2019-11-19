@@ -178,7 +178,6 @@ public final class BossEnemyDrawer implements EntityDrawer {
 		SnapshotParameters params = new SnapshotParameters();
 		params.setFill(Color.TRANSPARENT);
 		Image content = iv.snapshot(params, null);
-		animated = null;
 		graphicsContext.drawImage(content, outX, outY, outputW, outputH );
 
 	}
